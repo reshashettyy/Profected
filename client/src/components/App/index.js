@@ -4,6 +4,7 @@ import Landing from '../Landing';
 import Matching from '../Matching';
 import Calendar from '../Calendar';
 import Resources from '../Resources';
+import VideoEmbedding from '../VideoEmbedding';
 
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/matching" element={<Matching />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/resources" element={<Resources />} />
+        <Route path="/videoembedding" element={<VideoEmbedding />} />
       </Routes>
     </Router>
   );
