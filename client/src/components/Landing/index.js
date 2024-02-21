@@ -1,10 +1,10 @@
 import React from 'react';
-import Review from './Review';
+import Landing from './Landing';
 
 function App() {
   return (
     <div>
-      <Review />
+      <Landing />
     </div>
   );
 }
