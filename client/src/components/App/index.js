@@ -2,7 +2,7 @@ import * as React from 'react';
 import Navigation from '../Navigation/Navigation';
 import Landing from '../Landing';
 import Matching from '../Matching';
-import Calendar from '../Calendar';
+import MainCalendar from '../Calendar';
 import Resources from '../Resources';
 import VideoEmbedding from '../VideoEmbedding';
 
@@ -15,7 +15,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/matching" element={<Matching />} />
-        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/maincalendar" element={<MainCalendar />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/videoembedding" element={<VideoEmbedding />} />
       </Routes>
