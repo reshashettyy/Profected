@@ -5,8 +5,7 @@ import TimeDate from './TimeDate';
 function App() {
   return (
     <div>
-      <TimeDate/>
-      <Landing />
+      <TimeDate />
     </div>
   );
 }
