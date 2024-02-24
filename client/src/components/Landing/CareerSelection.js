@@ -17,6 +17,7 @@ function CareerSelection({selectedInterest, handleInterestChange}) {
     'Quality Assurance',
     'Business Analyst',
     'Product Management',
+    'UX/UI Design',
   ];
 
   return (
