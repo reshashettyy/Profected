@@ -21,23 +21,26 @@ function CareerSelection({selectedInterest, handleInterestChange}) {
   ];
 
   return (
-    <FormControl fullWidth>
-      <InputLabel id="interest-select-label">
-        Select your Career Interest
-      </InputLabel>
-      <Select
-        value={selectedInterest}
-        onChange={event => handleInterestChange(event.target.value)}
-        labelId="interest-select-label"
-        id="interest-select"
-      >
-        {interests.map(interest => (
-          <MenuItem key={interest} value={interest}>
-            {interest}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <div>
+      <h3>Select your interests:</h3>
+      <FormControl fullWidth>
+        <InputLabel id="interest-select-label">
+          Select your Career Interest
+        </InputLabel>
+        <Select
+          value={selectedInterest}
+          onChange={event => handleInterestChange(event.target.value)}
+          labelId="interest-select-label"
+          id="interest-select"
+        >
+          {interests.map(interest => (
+            <MenuItem key={interest} value={interest}>
+              {interest}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
   );
 }
 

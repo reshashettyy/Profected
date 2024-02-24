@@ -28,25 +28,28 @@ function ProgramSelection({selectedProgram, handleProgramChange}) {
   ];
 
   return (
-    <FormControl fullWidth>
-      <InputLabel id="program-select-label">Select your Program</InputLabel>
-      <Select
-        value={selectedProgram ? selectedProgram.id : ''}
-        onChange={event =>
-          handleProgramChange(
-            programs.find(program => program.id === event.target.value),
-          )
-        } // Find the program object corresponding to the selected id
-        labelId="program-select-label"
-        id="program-select"
-      >
-        {programs.map(program => (
-          <MenuItem key={program.id} value={program.id}>
-            {program.name}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <div>
+      <h3>Select your program of study:</h3>
+      <FormControl fullWidth>
+        <InputLabel id="program-select-label">Select your Program</InputLabel>
+        <Select
+          value={selectedProgram ? selectedProgram.id : ''}
+          onChange={event =>
+            handleProgramChange(
+              programs.find(program => program.id === event.target.value),
+            )
+          } // Find the program object corresponding to the selected id
+          labelId="program-select-label"
+          id="program-select"
+        >
+          {programs.map(program => (
+            <MenuItem key={program.id} value={program.id}>
+              {program.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
   );
 }
 
