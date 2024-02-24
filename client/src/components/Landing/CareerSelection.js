@@ -22,7 +22,7 @@ function CareerSelection({selectedInterest, handleInterestChange}) {
 
   return (
     <div>
-      <h3>Select your interests:</h3>
+      <h3>Select your career interests:</h3>
       <FormControl fullWidth>
         <InputLabel id="interest-select-label">
           Select your Career Interest
