@@ -16,6 +16,7 @@ function CareerSelection({selectedInterest, handleInterestChange}) {
     'Data Engineering',
     'Quality Assurance',
     'Business Analyst',
+    'Product Management',
   ];
 
   return (
