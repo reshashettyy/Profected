@@ -10,7 +10,7 @@ describe('CareerSelection', () => {
     render(<CareerSelection selectedInterest={selectedInterest} />);
   });
 
-  it('renders the dropdown', () => {
+  it('renders the career selection component', () => {
     const headerText = screen.getByText('Select your career interests:');
     expect(headerText).toBeInTheDocument();
   });
