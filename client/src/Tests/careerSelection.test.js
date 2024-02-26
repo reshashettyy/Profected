@@ -1,7 +1,7 @@
 import React from 'react';
 import {render, screen} from '@testing-library/react';
 import '@testing-library/jest-dom';
-import CareerSelection from './CareerSelection';
+import CareerSelection from '../components/Matching/CareerSelection';
 
 describe('CareerSelection', () => {
   const selectedInterest = 'Front End Development';
