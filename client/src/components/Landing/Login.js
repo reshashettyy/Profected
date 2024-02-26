@@ -25,7 +25,6 @@ export default function Login() {
         } else {
             alert("Invalid username or password.");
         }
-        
         navigate ('/matching');
     };
 
