@@ -1,5 +1,8 @@
 # Profected
 
+Our project is an online networking platform designed to connect students with industry professionals, providing tailored mentorship experiences and valuable networking opportunities. Inspired by the need to bridge the gap between students' educational journey and real-world industry insights, our platform aims to facilitate meaningful connections and career development.
+
+
 README updated February 25th 2024
 
 ## Application Rundown
