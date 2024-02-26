@@ -31,14 +31,14 @@ function ProgramSelection({selectedProgram, handleProgramChange}) {
     <div>
       <h3>Select your program of study:</h3>
       <FormControl fullWidth>
-        <InputLabel id="program-select-label">Select your Program</InputLabel>
+        <InputLabel id="program-select-label">Select your Program:</InputLabel>
         <Select
           value={selectedProgram ? selectedProgram.id : ''}
           onChange={event =>
             handleProgramChange(
               programs.find(program => program.id === event.target.value),
             )
-          } // Find the program object corresponding to the selected id
+          }
           labelId="program-select-label"
           id="program-select"
         >
