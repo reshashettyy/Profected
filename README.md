@@ -1,3 +1,46 @@
+# Profected
+README updated February 25th 2024
+
+## Application Rundown
+- The navigation bar at the top of the application redirects the user to different pages
+    - Home
+    - Matching
+    - MainCalendar
+    - Resources
+    - VideoEmbedding
+    - User profile
+Note: The team plans on changing the names of pages in the navigation bar
+
+### Home
+- On the home page, the user is brought to the login box where they will need to enter their own user name and password to login
+- If users do not have an account, they can click on the "Sign Up" button, to create an account
+- To create an account, the user will need to complete the fields (error handling is working for the sign up page) 
+- The user can sign up and their information is stored in our database
+
+- To test the login page, use hardcoded data:
+      - Username:testuser
+      - Password: testpassword
+
+### Matching
+- Student is capable of selecting their information to get matched with an industry professional
+- Student can select their study of program
+- Student can select their career interests
+- Student can enter the list of dates that will work for them for meetings
+- Student can enter a range of time that works for them to meet during the dates they have selected
+
+### MainCalendar
+- Calendar of current month and year currently renders on the page
+- User can select "back" to go a month back, user can select "next" to go the next month
+- Hardcoded data is shown on the calendar, for example for the month of April, user can see "sprint1" show up on the calendar (Note: random data was hardcoded into the calendar for rendering purposes)
+- User can view calendar in "Month", "Week", "Day" and "Agenda" form
+- User can also enter a new event that will render on calendar (midst of saving data on SQL database)
+
+### Resources
+- To be worked on next Sprint
+
+### VideoEmbedding
+- 
+
 [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-7f7980b617ed060a017424585567c406b6ee15c891e84e1186181d67ecf80aa0.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=13352842)
 # MSci 342 - Project template
 
