@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Navigation from '../Navigation/Navigation';
-import Landing from '../Landing';
+import Landing from '../Landing/Login';
 import Matching from '../Matching';
 import MainCalendar from '../Calendar/Calendar';
 import Resources from '../Resources';
