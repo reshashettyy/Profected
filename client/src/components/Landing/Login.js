@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import './Matching.css'; // Import CSS file for styling
-import SignUp from '../SignUp/SignUp'; // Import the SignUp component
+import './Login.css'; // Import CSS file for styling
+import SignUp from '../SignUp/SignUp'; 
+import { useNavigate } from 'react-router-dom';
 
-export default function Matching() {
+export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
     const [currentPage, setCurrentPage] = useState('login'); // Track current page
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -23,6 +25,8 @@ export default function Matching() {
         } else {
             alert("Invalid username or password.");
         }
+        
+        navigate ('/matching');
     };
 
     const handleSignUpClick = () => {
