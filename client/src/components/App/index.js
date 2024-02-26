@@ -7,6 +7,7 @@ import Resources from '../Resources';
 import VideoEmbedding from '../VideoEmbedding';
 
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import SignUp from '../SignUp/SignUp';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/matching" element={<Matching />} />
+        <Route path="/SignUp" element={<SignUp />} />
         <Route path="/maincalendar" element={<MainCalendar />} />
         <Route path="/resources" element={<Resources />} />
         <Route path="/videoembedding" element={<VideoEmbedding />} />

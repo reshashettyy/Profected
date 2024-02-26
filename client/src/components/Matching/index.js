@@ -1,66 +1,51 @@
-import React, { useState } from 'react';
-import './Matching.css'; // Import CSS file for styling
+import React, {useState} from 'react';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import ProgramSelection from './ProgramSelection';
+import CareerSelection from './CareerSelection';
+import TimeDate from './TimeDate';
 
-export default function Matching() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [rememberMe, setRememberMe] = useState(false);
+function App() {
+  const [selectedProgram, setSelectedProgram] = useState(null);
+  const [selectedInterest, setSelectedInterest] = useState('');
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const hardcodedUsername = "testuser";
-        const hardcodedPassword = "testpassword";
+  const handleProgramChange = program => {
+    setSelectedProgram(program);
+  };
 
-        if (username.trim() === hardcodedUsername && password === hardcodedPassword) {
-            if (rememberMe) {
-                localStorage.setItem('username', username);
-            } else {
-                localStorage.removeItem('username');
-            }
-            alert("Login successful!");
-        } else {
-            alert("Invalid username or password.");
-        }
-    };
+  const handleInterestChange = interest => {
+    setSelectedInterest(interest);
+  };
 
-    return (
-        <div className="login-container"> {/* Apply styling for centering */}
-            <div className="login-box"> {/* Apply styling for box */}
-                <h2>Login</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="username">Username:</label>
-                        <input 
-                            type="text" 
-                            id="username" 
-                            name="username" 
-                            value={username} 
-                            onChange={(e) => setUsername(e.target.value)} 
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password:</label>
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password" 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input 
-                            type="checkbox" 
-                            id="rememberMe" 
-                            name="rememberMe" 
-                            checked={rememberMe} 
-                            onChange={(e) => setRememberMe(e.target.checked)} 
-                        />
-                        <label htmlFor="rememberMe">Remember Me</label>
-                    </div>
-                    <button type="submit">Login</button>
-                </form>
-            </div>
-        </div>
-    );
+  return (
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh"
+      px={2}
+    >
+      <Grid container spacing={2} style={{maxWidth: 400}}>
+        <Grid item xs={12}>
+          <Box pb={2}>
+            <ProgramSelection
+              selectedProgram={selectedProgram}
+              handleProgramChange={handleProgramChange}
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={12}>
+          <CareerSelection
+            selectedInterest={selectedInterest}
+            handleInterestChange={handleInterestChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TimeDate />
+        </Grid>
+      </Grid>
+    </Box>
+  );
 }
+
+export default App;
