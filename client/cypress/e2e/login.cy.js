@@ -1,6 +1,6 @@
 describe('Login', () => {
   it('logs in with hardcoded credentials', () => {
-    cy.visit('http://localhost:3000');
+    cy.visit('http://localhost:3000/login');
 
     //fill in the username and password fields with hardcoded values
     cy.get('#username').type('testuser');
