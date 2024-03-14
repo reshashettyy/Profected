@@ -6,11 +6,13 @@ import CareerSelection from './CareerSelection';
 import TimeDate from './TimeDate';
 import UniversitySelection from './UniversitySelection';
 import {Button} from '@mui/material';
+import GraduationYearSelection from './GraduationYearSelection';
 
 function App() {
   const [selectedProgram, setSelectedProgram] = useState(null);
   const [selectedUniversity, setSelectedUniversity] = useState(null);
   const [selectedInterest, setSelectedInterest] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
 
   const handleProgramChange = program => {
     setSelectedProgram(program);
@@ -22,6 +24,10 @@ function App() {
 
   const handleUniversityChange = university => {
     setSelectedUniversity(university);
+  };
+
+  const handleYearChange = year => {
+    setSelectedYear(year);
   };
 
   const handleSubmit = () => {
@@ -52,6 +58,12 @@ function App() {
               handleProgramChange={handleProgramChange}
             />
           </Box>
+          <Box pb={2}>
+            <GraduationYearSelection
+              selectedYear={selectedYear}
+              handleYearChange={handleYearChange}
+            />
+          </Box>
         </Grid>
         <Grid item xs={12}>
           <CareerSelection
@@ -63,8 +75,6 @@ function App() {
           <TimeDate />
         </Grid>
         <Grid item xs={12}>
-          {' '}
-          {/* This ensures the button aligns properly under the TimeDate component */}
           <Button
             variant="contained"
             color="primary"
