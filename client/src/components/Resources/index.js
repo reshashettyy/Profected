@@ -1,5 +1,58 @@
 import React from 'react';
+import {Card, CardContent, Typography, Grid, Paper} from '@mui/material';
+import {makeStyles} from '@mui/styles';
+
+const useStyles = makeStyles(theme => ({
+  paper: {
+    transition: 'transform 0.2s',
+    '&:hover': {
+      transform: 'scale(1.05)',
+    },
+  },
+}));
+
+const hardcodedData = [
+  {
+    id: 1,
+    conference_name: 'Resource 1',
+    conference_location: 'Location 1',
+    conference_time: 'Time 1',
+  },
+  {
+    id: 2,
+    conference_name: 'Resource 2',
+    conference_location: 'Location 2',
+    conference_time: 'Time 2',
+  },
+  {
+    id: 3,
+    conference_name: 'Resource 3',
+    conference_location: 'Location 3',
+    conference_time: 'Time 3',
+  },
+  // Add more data as needed
+];
 
 export default function Resources() {
-  return <div>Resources</div>;
+  const classes = useStyles();
+
+  return (
+    <Grid container spacing={2}>
+      {hardcodedData.map(item => (
+        <Grid item key={item.id} xs={12} sm={6} md={4} lg={3}>
+          <Paper className={classes.paper}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6">{item.conference_name}</Typography>
+                <Typography variant="body2">
+                  {item.conference_location}
+                </Typography>
+                <Typography variant="body2">{item.conference_time}</Typography>
+              </CardContent>
+            </Card>
+          </Paper>
+        </Grid>
+      ))}
+    </Grid>
+  );
 }

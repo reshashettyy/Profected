@@ -8,8 +8,12 @@
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.10",
     "@mui/lab": "^5.0.0-alpha.165",
+    "@mui/material": "^5.15.13",
+    "@mui/styles": "^5.15.13",
     "@mui/x-date-pickers": "^6.19.4",
     "data-fns": "^1.1.0",
     "dotenv": "^16.0.3",
