@@ -13,7 +13,14 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
-const pages = ['Home', 'Matching', 'MainCalendar', 'Resources', 'VideoEmbedding'];
+const pages = [
+  'Home',
+  'Matching',
+  'MainCalendar',
+  'Resources',
+  'VideoEmbedding',
+  'Login',
+];
 const settings = ['Logout'];
 
 function Navigation() {

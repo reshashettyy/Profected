@@ -1,12 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 
-function Landing() {
-  return (
-    <div>
-      <p>ENTER TIME AND DATE RANGE</p>
-      <p>testing branch upstream</p>
-    </div>
-  );
-}
+const Landing = () => {
+  return <div>LandingPage</div>;
+};
 
 export default Landing;
