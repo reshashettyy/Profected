@@ -1,9 +1,12 @@
 import React from 'react';
-import {Card, CardContent, Typography, Grid, Paper} from '@mui/material';
+import {Card, CardContent, Typography, Paper} from '@mui/material';
 import {makeStyles} from '@mui/styles';
+
+const SPACING = 16; // Set your desired spacing value here
 
 const useStyles = makeStyles(theme => ({
   paper: {
+    marginBottom: SPACING,
     transition: 'transform 0.2s',
     '&:hover': {
       transform: 'scale(1.05)',
@@ -30,17 +33,17 @@ const hardcodedData = [
     conference_location: 'Location 3',
     conference_time: 'Time 3',
   },
-  // Add more data as needed
 ];
 
 export default function Resources() {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={2}>
-      {hardcodedData.map(item => (
-        <Grid item key={item.id} xs={12} sm={6} md={4} lg={3}>
-          <Paper className={classes.paper}>
+    <div style={{marginTop: '80px', marginLeft: '150px'}}>
+      <h1>Resources</h1>
+      <div style={{maxWidth: '500px'}}>
+        {hardcodedData.map(item => (
+          <Paper className={classes.paper} key={item.id}>
             <Card>
               <CardContent>
                 <Typography variant="h6">{item.conference_name}</Typography>
@@ -51,8 +54,8 @@ export default function Resources() {
               </CardContent>
             </Card>
           </Paper>
-        </Grid>
-      ))}
-    </Grid>
+        ))}
+      </div>
+    </div>
   );
 }
