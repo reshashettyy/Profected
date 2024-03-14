@@ -1,18 +1,20 @@
 import React, {useState} from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import {Button} from '@mui/material';
 import ProgramSelection from './ProgramSelection';
 import CareerSelection from './CareerSelection';
 import TimeDate from './TimeDate';
 import UniversitySelection from './UniversitySelection';
-import {Button} from '@mui/material';
 import GraduationYearSelection from './GraduationYearSelection';
+import RelevantSkills from './RelevantSkills';
 
 function App() {
   const [selectedProgram, setSelectedProgram] = useState(null);
   const [selectedUniversity, setSelectedUniversity] = useState(null);
   const [selectedInterest, setSelectedInterest] = useState('');
   const [selectedYear, setSelectedYear] = useState('');
+  const [skills, setSkills] = useState('');
 
   const handleProgramChange = program => {
     setSelectedProgram(program);
@@ -28,6 +30,10 @@ function App() {
 
   const handleYearChange = year => {
     setSelectedYear(year);
+  };
+
+  const handleSkillsChange = event => {
+    setSkills(event.target.value);
   };
 
   const handleSubmit = () => {
@@ -66,10 +72,18 @@ function App() {
           </Box>
         </Grid>
         <Grid item xs={12}>
-          <CareerSelection
-            selectedInterest={selectedInterest}
-            handleInterestChange={handleInterestChange}
-          />
+          <Box pb={2}>
+            <CareerSelection
+              selectedInterest={selectedInterest}
+              handleInterestChange={handleInterestChange}
+            />
+          </Box>
+          <Box pb={2}>
+            <RelevantSkills
+              skills={skills}
+              handleSkillsChange={handleSkillsChange}
+            />
+          </Box>
         </Grid>
         <Grid item xs={12}>
           <TimeDate />

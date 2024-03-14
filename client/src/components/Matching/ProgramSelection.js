@@ -41,6 +41,7 @@ function ProgramSelection({selectedProgram, handleProgramChange}) {
           }
           labelId="program-select-label"
           id="program-select"
+          label="Select your Program:"
         >
           {programs.map(program => (
             <MenuItem key={program.id} value={program.id}>

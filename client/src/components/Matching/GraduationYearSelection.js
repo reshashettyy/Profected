@@ -16,10 +16,12 @@ function GraduationYearSelection({selectedYear, handleYearChange}) {
         <InputLabel id="year-select-label">
           Select your Graduation Year:
         </InputLabel>
+
         <Select
           value={selectedYear}
           onChange={event => handleYearChange(event.target.value)}
           labelId="year-select-label"
+          label="Select your Graduation Year:"
           id="year-select"
         >
           {years.map(year => (

@@ -36,6 +36,7 @@ function UniversitySelection({selectedUniversity, handleUniversityChange}) {
           value={selectedUniversity}
           onChange={event => handleUniversityChange(event.target.value)}
           labelId="university-select-label"
+          label="Select your University:"
           id="university-select"
         >
           {universities.map(university => (
