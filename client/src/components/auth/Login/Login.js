@@ -1,38 +1,36 @@
 import React, {useState} from 'react';
-import './Login.css'; // Import CSS file for styling
+import './Login.css';
 import SignUp from '../SignUp/SignUp';
 import {useNavigate} from 'react-router-dom';
+import {auth} from '../../../firebase';
+import {signInWithEmailAndPassword} from 'firebase/auth';
 
 export default function Login() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [currentPage, setCurrentPage] = useState('login'); // Track current page
+  const [currentPage, setCurrentPage] = useState('login');
   const navigate = useNavigate();
 
   const handleSubmit = e => {
     e.preventDefault();
-    const hardcodedUsername = 'testuser';
-    const hardcodedPassword = 'testpassword';
-
-    if (
-      username.trim() === hardcodedUsername &&
-      password === hardcodedPassword
-    ) {
-      if (rememberMe) {
-        localStorage.setItem('username', username);
-      } else {
-        localStorage.removeItem('username');
-      }
-      alert('Login successful!');
-    } else {
-      alert('Invalid username or password.');
-    }
-    navigate('/');
+    signInWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        console.log(userCredential);
+        navigate('/');
+      })
+      .catch(error => {
+        console.error('Login error:', error.message);
+        // Handle login error, e.g., display error message to the user
+      });
   };
 
   const handleSignUpClick = () => {
     setCurrentPage('signup');
+  };
+
+  const handleSignUpSuccess = () => {
+    setCurrentPage('login');
   };
 
   return (
@@ -42,13 +40,13 @@ export default function Login() {
           <h2>Login</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="username">Username:</label>
+              <label htmlFor="email">Email:</label>
               <input
-                type="text"
-                id="username"
-                name="username"
-                value={username}
-                onChange={e => setUsername(e.target.value)}
+                type="email"
+                id="email"
+                name="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
               />
             </div>
             <div className="form-group">
@@ -82,7 +80,9 @@ export default function Login() {
           </form>
         </div>
       )}
-      {currentPage === 'signup' && <SignUp />}
+      {currentPage === 'signup' && (
+        <SignUp onSignUpSuccess={handleSignUpSuccess} />
+      )}
     </div>
   );
 }

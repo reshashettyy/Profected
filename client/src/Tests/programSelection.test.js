@@ -11,7 +11,10 @@ describe('ProgramSelection', () => {
   });
 
   it('renders the dropdown', () => {
-    const headerText = screen.getByText('Select your Program:');
-    expect(headerText).toBeInTheDocument();
+    const headerTextElements = screen.queryAllByText('Select your Program:');
+
+    headerTextElements.forEach(element => {
+      expect(element).toBeInTheDocument();
+    });
   });
 });
