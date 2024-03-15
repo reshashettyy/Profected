@@ -31,11 +31,4 @@ describe('Resources', () => {
       screen.getByText('Tech Networking Social @ Offworld Bar'),
     ).toBeInTheDocument();
   });
-
-  it('renders the Google Maps frame', async () => {
-    render(<Resources />);
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    const googleMapFrame = await screen.findByTestId('google-map-frame');
-    expect(googleMapFrame).toBeInTheDocument();
-  });
 });

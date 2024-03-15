@@ -11,7 +11,7 @@ describe('CareerSelection', () => {
   });
 
   it('renders the dropdown', () => {
-    const headerText = screen.getByText('Select your career interests:');
+    const headerText = screen.getByText('Select your Career Interests:');
     expect(headerText).toBeInTheDocument();
   });
 });

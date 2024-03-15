@@ -150,27 +150,23 @@ export default function Resources() {
           ))}
         </div>
         <div style={{width: '500px', height: '500px'}}>
-          <div data-testid="google-map-frame">
-            <GoogleMapReact
-              bootstrapURLKeys={{
-                key: 'AIzaSyD9qoPVKR16zb1xStq2te9gLCneUxiWejo',
-              }}
-              defaultCenter={{lat: 43.65, lng: -79.386}}
-              defaultZoom={13}
-            >
-              {resources.map(resource => (
-                <Marker
-                  key={resource.id}
-                  lat={resource.latitude}
-                  lng={resource.longitude}
-                  onClick={() => handleMarkerClick(resource.id)}
-                  isDropped={
-                    markerAnimations[resource.conference_id] === 'DROP'
-                  }
-                />
-              ))}
-            </GoogleMapReact>
-          </div>
+          <GoogleMapReact
+            bootstrapURLKeys={{
+              key: 'AIzaSyD9qoPVKR16zb1xStq2te9gLCneUxiWejo',
+            }}
+            defaultCenter={{lat: 43.65, lng: -79.386}}
+            defaultZoom={13}
+          >
+            {resources.map(resource => (
+              <Marker
+                key={resource.id}
+                lat={resource.latitude}
+                lng={resource.longitude}
+                onClick={() => handleMarkerClick(resource.id)}
+                isDropped={markerAnimations[resource.conference_id] === 'DROP'}
+              />
+            ))}
+          </GoogleMapReact>
         </div>
       </div>
     </div>
