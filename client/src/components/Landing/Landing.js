@@ -149,10 +149,10 @@ const Landing = () => {
             Bridging the gap between students and industry professionals.
           </Typography>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
-            <Button variant="contained" color="primary" href="#matching">
+            <Button variant="contained" color="primary" href="matching">
               Get Matched
             </Button>
-            <Button variant="outlined" color="primary" href="#resources" style={{ marginLeft: '1rem' }}>
+            <Button variant="outlined" color="primary" href="resources" style={{ marginLeft: '1rem' }}>
               Explore Resources
             </Button>
           </div>
@@ -220,11 +220,31 @@ const Landing = () => {
 
       {/* Profile Dialog */}
       <Dialog open={!!selectedProfile} onClose={handleCloseDialog}>
-        <DialogTitle>{selectedProfile?.name}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>{selectedProfile?.bio}</DialogContentText>
-        </DialogContent>
-      </Dialog>
+  <DialogTitle>{selectedProfile?.name}</DialogTitle>
+  <DialogContent>
+    <Box border={1} borderRadius={4} p={2} borderColor="grey.300">
+      <Typography variant="subtitle1" component="span" fontWeight="bold">
+        Name:
+      </Typography>
+      <Typography variant="body1" component="span">
+        {selectedProfile?.name}
+      </Typography>
+    </Box>
+    <Box mt={2} border={1} borderRadius={4} p={2} borderColor="grey.300">
+      <Typography variant="subtitle1" component="span" fontWeight="bold">
+        Bio:
+      </Typography>
+      <Typography variant="body1" component="span">
+        {selectedProfile?.bio}
+      </Typography>
+    </Box>
+    <Box mt={2}>
+      <Button variant="contained" color="primary" fullWidth>
+        Book Time with Me
+      </Button>
+    </Box>
+  </DialogContent>
+</Dialog>
       {/* End Profile Dialog */}
     </div>
   );
