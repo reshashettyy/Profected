@@ -4,7 +4,7 @@ import {TextField} from '@mui/material';
 function RelevantSkills({skills, handleSkillsChange}) {
   return (
     <div>
-      <h3>Enter your Relevant Skills</h3>
+      <h3>Enter your Relevant Skills: </h3>
       <TextField
         label="Enter your relevant skills (separated by comma)"
         variant="outlined"
