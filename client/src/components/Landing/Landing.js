@@ -219,12 +219,13 @@ const Landing = () => {
       </div>
 
       {/* Profile Dialog */}
-      <Dialog open={!!selectedProfile} onClose={handleCloseDialog}>
+      // Inside the Profile Dialog component
+<Dialog open={!!selectedProfile} onClose={handleCloseDialog}>
   <DialogTitle>{selectedProfile?.name}</DialogTitle>
   <DialogContent>
     <Box border={1} borderRadius={4} p={2} borderColor="grey.300">
       <Typography variant="subtitle1" component="span" fontWeight="bold">
-        Name:
+        Name: 
       </Typography>
       <Typography variant="body1" component="span">
         {selectedProfile?.name}
@@ -232,7 +233,23 @@ const Landing = () => {
     </Box>
     <Box mt={2} border={1} borderRadius={4} p={2} borderColor="grey.300">
       <Typography variant="subtitle1" component="span" fontWeight="bold">
-        Bio:
+        Role: 
+      </Typography>
+      <Typography variant="body1" component="span">
+        {selectedProfile?.jobTitle}
+      </Typography>
+    </Box>
+    <Box mt={2} border={1} borderRadius={4} p={2} borderColor="grey.300">
+      <Typography variant="subtitle1" component="span" fontWeight="bold">
+        Company: 
+      </Typography>
+      <Typography variant="body1" component="span">
+        {selectedProfile?.company}
+      </Typography>
+    </Box>
+    <Box mt={2} border={1} borderRadius={4} p={2} borderColor="grey.300">
+      <Typography variant="subtitle1" component="span" fontWeight="bold">
+        Bio: 
       </Typography>
       <Typography variant="body1" component="span">
         {selectedProfile?.bio}
