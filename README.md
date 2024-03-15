@@ -3,16 +3,25 @@
 Our project is an online networking platform designed to connect students with industry professionals, providing tailored mentorship experiences and valuable networking opportunities. Inspired by the need to bridge the gap between students' educational journey and real-world industry insights, our platform aims to facilitate meaningful connections and career development.
 
 
-README updated February 25th 2024
+README updated March 15 2024
 
 ## Application Rundown
 
 - The navigation bar at the top of the application redirects the user to different pages - Home - Matching - MainCalendar - Resources - VideoEmbedding - User profile
   Note: The team plans on changing the names of pages in the navigation bar
 
-### Home
+# Networking Platform Landing Page
+- Entry point for a networking platform connecting students and industry professionals.
+- Provides essential information, encourages action, and showcases professional profiles.
 
-- On the home page, the user is brought to the login box where they will need to enter their own user name and password to login
+## Usage
+- Visit landing page to learn about platform and features.
+- Explore professional profiles for networking and mentorship.
+- Click on a profile to view details and book time. Includes bio and reasons to book time, and allows direct booking.
+
+
+## Login
+- The user is brought to the login box where they will need to enter their own user name and password to login
 - If users do not have an account, they can click on the "Sign Up" button, to create an account
 - To create an account, the user will need to complete the fields (error handling is working for the sign up page)
 - The user can sign up and their information is stored in our database
