@@ -1,142 +1,231 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Typography, Container, Grid, Card, CardContent, Avatar } from '@material-ui/core';
+import { Button, Typography, Container, Grid, Card, CardContent, Avatar, Box, Dialog, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6),
-    position: 'relative', // Required for positioning the airplane
-    overflow: 'hidden', // Hide overflow to prevent airplane from appearing outside the container
+    padding: theme.spacing(8, 3, 5),
+    position: 'relative',
+    overflow: 'hidden',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '0rem', // Added margin top to move it down
   },
-  button: {
-    marginTop: theme.spacing(4),
+  profilesContainer: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: theme.spacing(2),
+    justifyContent: 'center',
+    width: '50%',
   },
-  card: {
+  profile: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     padding: theme.spacing(2),
-    margin: theme.spacing(2),
+    border: `1px solid ${theme.palette.primary.main}`,
+    borderRadius: theme.spacing(1),
+    boxShadow: theme.shadows[3],
+    transition: 'transform 0.3s ease',
+    '&:hover': {
+      transform: 'translateY(-10px)',
+      cursor: 'pointer', // Add cursor pointer on hover
+    },
+  },
+  cardContent: {
+    textAlign: 'center',
   },
   avatar: {
     width: theme.spacing(12),
     height: theme.spacing(12),
     marginBottom: theme.spacing(2),
   },
-  airplane: {
-    position: 'absolute',
-    top: '-50px', // Position above the hero content
-    left: '-100px', // Start position outside the container
-    width: '150px',
-    animation: '$flyPlane 10s linear infinite', // Animation for flying the airplane
+  infoBoxContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '50%',
   },
-  '@keyframes flyPlane': {
-    '0%': {
-      transform: 'translateX(-100%)',
-    },
-    '100%': {
-      transform: 'translateX(110%)', // Move across the container and a bit more to ensure it's off-screen
-    },
+  infoBoxTitle: {
+    backgroundColor: '#f5f5f5',
+    padding: theme.spacing(2),
+    borderRadius: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: '1.5rem',
+  },
+  infoBox: {
+    backgroundColor: '#f5f5f5',
+    padding: theme.spacing(4),
+    borderRadius: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    textAlign: 'center',
   },
 }));
 
 const Landing = () => {
   const classes = useStyles();
+  const [selectedProfile, setSelectedProfile] = useState(null);
+
+  const handleProfileClick = (profile) => {
+    setSelectedProfile(profile);
+  };
+
+  const handleCloseDialog = () => {
+    setSelectedProfile(null);
+  };
+
+  const fakeProfiles = [
+    { 
+      name: 'John Doe', 
+      jobTitle: 'Software Engineer', 
+      company: 'Google',
+      bio: 'John is a passionate software engineer with expertise in building web applications using React and Node.js.',
+    },
+    { 
+      name: 'Jane Smith', 
+      jobTitle: 'Data Scientist', 
+      company: 'Amazon',
+      bio: 'Jane is a data scientist specializing in machine learning algorithms and predictive analytics.',
+    },
+    { 
+      name: 'Alex Johnson', 
+      jobTitle: 'Web Developer', 
+      company: 'Figure AI',
+      bio: 'Alex is a skilled web developer experienced in creating responsive and user-friendly websites.',
+    },
+    { 
+      name: 'Emily Brown', 
+      jobTitle: 'UX Designer', 
+      company: 'Netflix',
+      bio: 'Emily is a creative UX designer passionate about crafting engaging and intuitive user experiences.',
+    },
+    { 
+      name: 'Michael Wil', 
+      jobTitle: 'Marketing Manager', 
+      company: 'NVIDIA',
+      bio: 'Michael is an experienced marketing manager with a proven track record of driving brand awareness and customer engagement.',
+    },
+    { 
+      name: 'Sarah Mart', 
+      jobTitle: 'Product Manager', 
+      company: 'Meta',
+      bio: 'Sarah is a strategic product manager skilled in leading cross-functional teams to deliver innovative products.',
+    },
+    { 
+      name: 'David Lee', 
+      jobTitle: 'Financial Analyst', 
+      company: 'TD Bank',
+      bio: 'David is a detail-oriented financial analyst with expertise in financial modeling and data analysis.',
+    },
+    { 
+      name: 'Jessica Tay', 
+      jobTitle: 'HR Specialist', 
+      company: 'Twitter',
+      bio: 'Jessica is a dedicated HR specialist committed to fostering a positive and inclusive workplace culture.',
+    },
+    { 
+      name: 'Chris Garcia', 
+      jobTitle: 'Sales Representative', 
+      company: 'Sephora',
+      bio: 'Chris is a results-driven sales representative passionate about exceeding customer expectations and driving revenue growth.',
+    },
+  ];
+  
 
   return (
     <div>
-      {/* Hero unit with airplane */}
-      <div className={classes.heroContent}>
-        <div className={classes.airplane}>
-          {/* Insert your airplane image here */}
-          <img src="airplane.png" alt="Airplane" />
-        </div>
-        <Container maxWidth="sm">
-          <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+      {/* Call to Action */}
+      <Container maxWidth="md">
+        <div style={{ textAlign: 'center', marginTop: '40px' }}>
+          <Typography variant="h3" align="center" color="textPrimary" gutterBottom>
             Welcome to Our Networking Platform
           </Typography>
           <Typography variant="h5" align="center" color="textSecondary" paragraph>
             Bridging the gap between students and industry professionals.
           </Typography>
-          <div className={classes.button}>
-            <Grid container spacing={2} justify="center">
-              <Grid item>
-                <Button variant="contained" color="primary" href="#matching">
-                  Get Matched
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button variant="outlined" color="primary" href="#resources">
-                  Explore Resources
-                </Button>
-              </Grid>
-            </Grid>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}>
+            <Button variant="contained" color="primary" href="#matching">
+              Get Matched
+            </Button>
+            <Button variant="outlined" color="primary" href="#resources" style={{ marginLeft: '1rem' }}>
+              Explore Resources
+            </Button>
+          </div>
+        </div>
+      </Container>
+      {/* End Call to Action */}
+
+      <div className={classes.heroContent}>
+        {/* Profiles Section */}
+        <Container maxWidth="md" className={classes.profilesContainer}>
+  {fakeProfiles.map((profile, index) => (
+    <div key={index} className={classes.profile} onClick={() => handleProfileClick(profile)}>
+      <Avatar alt={`Profile ${index + 1}`} src={`https://i.pravatar.cc/150?img=${index + 1}`} className={classes.avatar} />
+      <CardContent className={classes.cardContent}>
+        <Typography variant="h6" align="center" color="textPrimary" gutterBottom>
+          {profile.name}
+        </Typography>
+        <Typography variant="body2" align="center" color="textSecondary" component="p">
+          {profile.jobTitle}
+        </Typography>
+        <Typography variant="body2" align="center" color="textSecondary" component="p">
+          {profile.company}
+        </Typography>
+      </CardContent>
+    </div>
+  ))}
+</Container>
+
+        {/* End Profiles Section */}
+
+        {/* Info Boxes Section */}
+        <Container maxWidth="md" className={classes.infoBoxContainer}>
+          <div>
+            <Box className={classes.infoBoxTitle}>
+              What We Offer:
+            </Box>
+            <Box className={classes.infoBox}>
+              <Typography variant="h4" align="center" color="textPrimary" gutterBottom>
+                Advanced Matching System
+              </Typography>
+              <Typography variant="body1" align="center" color="textSecondary" paragraph>
+                Our platform utilizes advanced algorithms to match students with industry professionals based on their interests, skills, and career objectives.
+              </Typography>
+            </Box>
+            <Box className={classes.infoBox}>
+              <Typography variant="h4" align="center" color="textPrimary" gutterBottom>
+                Automated Scheduling
+              </Typography>
+              <Typography variant="body1" align="center" color="textSecondary" paragraph>
+                Say goodbye to manual coordination. Our platform automates scheduling to ensure efficient and successful interactions between students and professionals.
+              </Typography>
+            </Box>
+            <Box className={classes.infoBox}>
+              <Typography variant="h4" align="center" color="textPrimary" gutterBottom>
+                Dedicated Resources Page
+              </Typography>
+              <Typography variant="body1" align="center" color="textSecondary" paragraph>
+                Access job opportunities, industry events, and other relevant resources from a centralized hub, enriching your professional development journey.
+              </Typography>
+            </Box>
           </div>
         </Container>
+        {/* End Info Boxes Section */}
       </div>
-      {/* End hero unit with airplane */}
 
-      {/* View Profiles Section */}
-      <Container maxWidth="md">
-        <Typography variant="h3" align="center" color="textPrimary" gutterBottom>
-          View Profiles
-        </Typography>
-        <Grid container justify="center" spacing={2}>
-          {[1, 2, 3].map((profile) => (
-            <Grid item key={profile}>
-              <Card className={classes.card}>
-                <Avatar alt={`Profile ${profile}`} src={`https://i.pravatar.cc/150?img=${profile}`} className={classes.avatar} />
-                <CardContent>
-                  <Typography variant="h6" align="center" color="textPrimary" gutterBottom>
-                    John Doe
-                  </Typography>
-                  <Typography variant="body2" align="center" color="textSecondary" component="p">
-                    Software Engineer
-                  </Typography>
-                  <Typography variant="body2" align="center" color="textSecondary" component="p">
-                    Company XYZ
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-      {/* End View Profiles Section */}
-
-      {/* Matching System */}
-      <Container maxWidth="md" id="matching">
-        <Typography variant="h3" align="center" color="textPrimary" gutterBottom>
-          Advanced Matching System
-        </Typography>
-        <Typography variant="h6" align="center" color="textSecondary" paragraph>
-          Our platform utilizes advanced algorithms to match students with industry professionals based on their interests, skills, and career objectives.
-        </Typography>
-      </Container>
-      {/* End Matching System */}
-
-      {/* Automated Scheduling */}
-      <Container maxWidth="md">
-        <Typography variant="h3" align="center" color="textPrimary" gutterBottom>
-          Automated Scheduling
-        </Typography>
-        <Typography variant="h6" align="center" color="textSecondary" paragraph>
-          Say goodbye to manual coordination. Our platform automates scheduling to ensure efficient and successful interactions between students and professionals.
-        </Typography>
-      </Container>
-      {/* End Automated Scheduling */}
-
-      {/* Resources Page */}
-      <Container maxWidth="md" id="resources">
-        <Typography variant="h3" align="center" color="textPrimary" gutterBottom>
-          Dedicated Resources Page
-        </Typography>
-        <Typography variant="h6" align="center" color="textSecondary" paragraph>
-          Access job opportunities, industry events, and other relevant resources from a centralized hub, enriching your professional development journey.
-        </Typography>
-      </Container>
-      {/* End Resources Page */}
+      {/* Profile Dialog */}
+      <Dialog open={!!selectedProfile} onClose={handleCloseDialog}>
+        <DialogTitle>{selectedProfile?.name}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{selectedProfile?.bio}</DialogContentText>
+        </DialogContent>
+      </Dialog>
+      {/* End Profile Dialog */}
     </div>
   );
 };
