@@ -17,7 +17,7 @@ export default function Login() {
     signInWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
         console.log(userCredential);
-        navigate('/matching');
+        navigate('/');
       })
       .catch(error => {
         console.error('Login error:', error.message);

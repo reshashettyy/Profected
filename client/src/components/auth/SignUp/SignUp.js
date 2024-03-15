@@ -24,15 +24,9 @@ export default function SignUp({onSignUpSuccess}) {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
-        const user = userCredential.user;
-        console.log(user);
-        return user.updateProfile({
-          displayName: `${firstName} ${lastName}`,
-          userType: userType,
-        });
+        console.log(userCredential);
       })
       .then(() => {
-        // Handle success
         const userData = {
           firstName: firstName,
           lastName: lastName,
