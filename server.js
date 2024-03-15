@@ -17,6 +17,26 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(express.static(path.join(__dirname, "client/build")));
 
+//get all the resources from the databases
+app.post("/api/getResources", (req, res) => {
+  let connection = mysql.createConnection(config);
+
+  let sql = "SELECT * FROM Resources";
+
+  connection.query(sql, (error, results) => {
+    if (error) {
+      return console.error(error.message);
+    }
+
+    let string = JSON.stringify(results);
+    let obj = JSON.parse(string);
+    console.log(obj);
+    res.send(obj);
+  });
+
+  connection.end();
+});
+
 // API to add a user to the database
 app.post("/api/addUser", (req, res) => {
   const { firstName, lastName, password, emailaddress, userType } = req.body;
