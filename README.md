@@ -3,43 +3,60 @@
 Our project is an online networking platform designed to connect students with industry professionals, providing tailored mentorship experiences and valuable networking opportunities. Inspired by the need to bridge the gap between students' educational journey and real-world industry insights, our platform aims to facilitate meaningful connections and career development.
 
 
-README updated February 25th 2024
+README updated March 15 2024
 
 ## Application Rundown
 
 - The navigation bar at the top of the application redirects the user to different pages - Home - Matching - MainCalendar - Resources - VideoEmbedding - User profile
   Note: The team plans on changing the names of pages in the navigation bar
 
-### Home
+## Landing Page
+- Entry point for a networking platform connecting students and industry professionals.
+- Provides essential information, encourages action, and showcases professional profiles.
+- Visit landing page to learn about platform and features.
+- Explore professional profiles for networking and mentorship.
+- Click on a profile to view details and book time. Includes bio and reasons to book time, and allows direct booking.
 
-- On the home page, the user is brought to the login box where they will need to enter their own user name and password to login
+## Login
+- The user is brought to the login box where they will need to enter their own user name and password to login
 - If users do not have an account, they can click on the "Sign Up" button, to create an account
 - To create an account, the user will need to complete the fields (error handling is working for the sign up page)
-- The user can sign up and their information is stored in our database
+- The user can sign up and then registerd using Firebase Authentication
+- Firebase authentication is setup with email and password providers
+- User can only login if the user has signed up on the portal before (authentication)
 
-- To test the login page, use hardcoded data: - Username:testuser - Password: testpassword
+- To test the login page, signup with your own credentials and then login with them and it should automatically redirect you to the landing page again
 
-- We will work on implementing the stored user information from the database to authenticate login in the next sprint.
+- We will work on adding custom attributes like userType (Student or Professional) into a firestore database
 
 ### Matching
 
+- Conditional Rendering is setup based on whether the user is a Student or a Professional
 - Student is capable of selecting their information to get matched with an industry professional
 - Student can select their study of program
 - Student can select their career interests
 - Student can enter the list of dates that will work for them for meetings
 - Student can enter a range of time that works for them to meet during the dates they have selected
+- Professional is capable of selecting Company, JobTitle, University, and dates
+- Clicking the submit button will store the values into the MySQL Database under the "StudentTraits" and "ProfessionalTraits" tables
+
+- Next Sprint we will work on the Matching algorithm and adding the dates the student and professionals are available
 
 ### MainCalendar
 
 - Calendar of current month and year currently renders on the page
 - User can select "back" to go a month back, user can select "next" to go the next month
-- Hardcoded data is shown on the calendar, for example for the month of April, user can see "sprint1" show up on the calendar (Note: random data was hardcoded into the calendar for rendering purposes)
 - User can view calendar in "Month", "Week", "Day" and "Agenda" form
 - User can also enter a new event that will render on calendar (midst of saving data on SQL database)
+- Data saved in the SQL database is rendered correctly onto the calenda
 
 ### Resources
 
-- To be worked on next Sprint
+- Hard coded all the data for local tech conferences
+- Rendered each one on a component card
+- Added Google Maps frame
+- Added markers that correlate to each of the card
+- When user hovers over the conference details, the marker bounces to attract users attention to the map
 
 ### VideoEmbedding
 

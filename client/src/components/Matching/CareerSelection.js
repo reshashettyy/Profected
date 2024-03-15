@@ -22,7 +22,7 @@ function CareerSelection({selectedInterest, handleInterestChange}) {
 
   return (
     <div>
-      <h3>Select your career interests:</h3>
+      <h3>Select your Career Interests:</h3>
       <FormControl fullWidth>
         <InputLabel id="interest-select-label">
           Select your Career Interest
@@ -31,6 +31,7 @@ function CareerSelection({selectedInterest, handleInterestChange}) {
           value={selectedInterest}
           onChange={event => handleInterestChange(event.target.value)}
           labelId="interest-select-label"
+          label="Select your Career Interest:"
           id="interest-select"
         >
           {interests.map(interest => (

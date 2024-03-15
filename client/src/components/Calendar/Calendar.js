@@ -5,7 +5,7 @@ https://www.npmjs.com/package/react-datepicker
 https://github.com/NikValdez/reactCalendarTut/blob/master/src/App.js
 */
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 //imports for the calendar
 import format from 'date-fns/format';
@@ -16,6 +16,8 @@ import {Calendar, dateFnsLocalizer} from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+
+const serverURL = ' ';
 
 //adding locales to determine calendar information according to locality
 const locales = {
@@ -31,30 +33,52 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-//dummy data, to be replaced by data we get from SQL
-//dates are causing a litle but of an issue, since Jan = 0 and iterates by 1
-const calEvents = [
-  {
-    title: 'Sprint 1',
-    start: new Date(2024, 0, 1),
-    end: new Date(2024, 0, 1),
-    allDay: true,
-  },
-  {
-    title: 'Sprint 2',
-    start: new Date(2024, 3, 5),
-    end: new Date(2024, 3, 5),
-  },
-  {
-    title: 'Sprint 3',
-    start: new Date(2024, 3, 8),
-    end: new Date(2024, 3, 8),
-  },
-];
-
 function MainCalendar() {
+  useEffect(() => {
+    loadCalendar();
+  }, []);
+
+  const loadCalendar = () => {
+    callApiGetCalendar(serverURL)
+      .then(res => {
+        console.log('callApiGetCalendar returned: ', res);
+
+        if (Array.isArray(res)) {
+          console.log('Updating allEvents state with fetched events');
+          setAllEvents(res);
+        } else {
+          console.error('Invalid API response format: expected an array');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching calendar events:', error);
+      });
+  };
+
+  const callApiGetCalendar = async serverURL => {
+    const url = serverURL + '/api/getCalendar';
+    console.log(url);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+
+    const events = body.map(event => ({
+      ...event,
+      start: new Date(event.event_date),
+      end: new Date(event.event_date),
+    }));
+
+    return events;
+  };
+
   const [newEvent, setNewEvent] = useState({title: '', start: '', end: ''});
-  const [allEvents, setAllEvents] = useState(calEvents);
+  const [allEvents, setAllEvents] = useState([]);
 
   function handleAddEvent() {
     setAllEvents([...allEvents, newEvent]);
@@ -68,9 +92,9 @@ function MainCalendar() {
         events={allEvents}
         startAccessor="start"
         endAccessor="end"
+        titleAccessor="event_name"
         style={{height: 700, marginLeft: '150px', marginRight: '150px'}}
       />
-
       <h2>Add New Event</h2>
       <div>
         <input

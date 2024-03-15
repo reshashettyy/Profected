@@ -17,6 +17,46 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(express.static(path.join(__dirname, "client/build")));
 
+//get all the resources from the database and into the calendar
+app.post("/api/getCalendar", (req, res) => {
+  let connection = mysql.createConnection(config);
+
+  let sql = "SELECT * FROM CalendarEvents";
+
+  connection.query(sql, (error, results) => {
+    if (error) {
+      return console.error(error.message);
+    }
+
+    let string = JSON.stringify(results);
+    let obj = JSON.parse(string);
+    console.log(obj);
+    res.send(obj);
+  });
+
+  connection.end();
+});
+
+//get all the resources from the databases
+app.post("/api/getResources", (req, res) => {
+  let connection = mysql.createConnection(config);
+
+  let sql = "SELECT * FROM Resources";
+
+  connection.query(sql, (error, results) => {
+    if (error) {
+      return console.error(error.message);
+    }
+
+    let string = JSON.stringify(results);
+    let obj = JSON.parse(string);
+    console.log(obj);
+    res.send(obj);
+  });
+
+  connection.end();
+});
+
 // API to add a user to the database
 app.post("/api/addUser", (req, res) => {
   const { firstName, lastName, password, emailaddress, userType } = req.body;
@@ -38,6 +78,55 @@ app.post("/api/addUser", (req, res) => {
 
     return res.status(200).json({ success: true });
   });
+  connection.end();
+});
+
+app.post("/api/addStudentTraits", (req, res) => {
+  const { university, program, graduation_year, career_interest, skills } =
+    req.body;
+
+  let connection = mysql.createConnection(config);
+
+  const sql = `INSERT INTO StudentTraits (university, program, graduation_year, career_interest, skills) 
+               VALUES (?, ?, ?, ?, ?)`;
+
+  const data = [university, program, graduation_year, career_interest, skills];
+
+  connection.query(sql, data, (error, results, fields) => {
+    if (error) {
+      console.error("Error adding Student Traits:", error.message);
+      return res
+        .status(500)
+        .json({ error: "Error adding student traits to the database" });
+    }
+
+    return res.status(200).json({ success: true });
+  });
+
+  connection.end();
+});
+
+app.post("/api/addProfessionalTraits", (req, res) => {
+  const { university, program, company, job_title, skills } = req.body;
+
+  let connection = mysql.createConnection(config);
+
+  const sql = `INSERT INTO ProfessionalTraits (university, program, company, job_title, skills) 
+               VALUES (?, ?, ?, ?, ?)`;
+
+  const data = [university, program, company, job_title, skills];
+
+  connection.query(sql, data, (error, results, fields) => {
+    if (error) {
+      console.error("Error adding Professional Traits:", error.message);
+      return res
+        .status(500)
+        .json({ error: "Error adding professional traits to the database" });
+    }
+
+    return res.status(200).json({ success: true });
+  });
+
   connection.end();
 });
 
