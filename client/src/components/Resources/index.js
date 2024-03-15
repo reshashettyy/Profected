@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Card, CardContent, Typography, Paper} from '@mui/material';
 import {makeStyles} from '@mui/styles';
+import GoogleMapReact from 'google-map-react';
 
 const serverURL = ' ';
 
@@ -16,11 +17,63 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const Marker = ({latitude, longitude, onClick, isDropped}) => {
+  const [bounce, setBounce] = useState(false);
+
+  useEffect(() => {
+    if (isDropped) {
+      setBounce(true);
+      const timeout1 = setTimeout(() => {
+        setBounce(false);
+      }, 500); // Adjust the bounce duration as needed
+      const timeout2 = setTimeout(() => {
+        setBounce(true);
+      }, 1000); // Adjust the bounce duration as needed
+      const timeout3 = setTimeout(() => {
+        setBounce(false);
+      }, 1500); // Adjust the bounce duration as needed
+
+      return () => {
+        clearTimeout(timeout1);
+        clearTimeout(timeout2);
+        clearTimeout(timeout3);
+      };
+    }
+  }, [isDropped]);
+
+  const handleMouseLeave = () => {
+    setBounce(false);
+  };
+
+  return (
+    <div
+      style={{
+        color: 'red',
+        fontSize: '20px',
+        position: 'relative',
+        top: bounce ? -10 : 0, // Adjust the bounce height as needed
+        transition: 'top 0.5s ease',
+        cursor: 'pointer',
+      }}
+      onClick={onClick}
+      onMouseLeave={handleMouseLeave}
+    >
+      📍
+    </div>
+  );
+};
+
 export default function Resources() {
   const [resources, setResources] = useState([]);
   const classes = useStyles();
+  const [selectedMarker, setSelectedMarker] = useState(null);
+  const [markerAnimations, setMarkerAnimations] = useState({});
 
-  React.useEffect(() => {
+  const handleMarkerClick = conference_id => {
+    setSelectedMarker(conference_id);
+  };
+
+  useEffect(() => {
     loadResources();
   }, []);
 
@@ -47,6 +100,20 @@ export default function Resources() {
     return body;
   };
 
+  const handleCardHover = conference_id => {
+    setMarkerAnimations(prevAnimations => ({
+      ...prevAnimations,
+      [conference_id]: 'DROP',
+    }));
+  };
+
+  const handleCardLeave = conference_id => {
+    setMarkerAnimations(prevAnimations => ({
+      ...prevAnimations,
+      [conference_id]: '',
+    }));
+  };
+
   return (
     <div style={{marginTop: '80px', marginLeft: '150px', marginRight: '150px'}}>
       <h1>Resources</h1>
@@ -60,7 +127,12 @@ export default function Resources() {
       >
         <div style={{maxWidth: '500px'}}>
           {resources.map(resource => (
-            <Paper className={classes.paper} key={resource.conference_id}>
+            <Paper
+              className={classes.paper}
+              key={resource.conference_id}
+              onMouseEnter={() => handleCardHover(resource.conference_id)}
+              onMouseLeave={() => handleCardLeave(resource.conference_id)}
+            >
               <Card>
                 <CardContent>
                   <Typography variant="h6">
@@ -78,14 +150,21 @@ export default function Resources() {
           ))}
         </div>
         <div style={{width: '500px', height: '300px', marginLeft: '20px'}}>
-          <iframe
-            title="Map"
-            width="100%"
-            height="100%"
-            frameBorder="0"
-            src={`https://www.google.com/maps/embed/v1/view?key=YOUR_API_KEY&center=${hardcodedData[0].latitude},${hardcodedData[0].longitude}&zoom=10`}
-            allowFullScreen
-          ></iframe>
+          <GoogleMapReact
+            bootstrapURLKeys={{key: 'AIzaSyD9qoPVKR16zb1xStq2te9gLCneUxiWejo'}}
+            defaultCenter={{lat: 43.642, lng: -79.368}}
+            defaultZoom={13}
+          >
+            {resources.map(resource => (
+              <Marker
+                key={resource.id}
+                lat={resource.latitude}
+                lng={resource.longitude}
+                onClick={() => handleMarkerClick(resource.id)}
+                isDropped={markerAnimations[resource.conference_id] === 'DROP'}
+              />
+            ))}
+          </GoogleMapReact>
         </div>
       </div>
     </div>
