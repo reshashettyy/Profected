@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Marker = ({latitude, longitude, onClick, isDropped}) => {
+const Marker = ({onClick, isDropped}) => {
   const [bounce, setBounce] = useState(false);
 
   useEffect(() => {
