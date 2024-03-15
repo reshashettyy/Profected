@@ -5,7 +5,7 @@ import GoogleMapReact from 'google-map-react';
 
 const serverURL = ' ';
 
-const SPACING = 16; // Set your desired spacing value here
+const SPACING = 16;
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -25,13 +25,13 @@ const Marker = ({latitude, longitude, onClick, isDropped}) => {
       setBounce(true);
       const timeout1 = setTimeout(() => {
         setBounce(false);
-      }, 500); // Adjust the bounce duration as needed
+      }, 500);
       const timeout2 = setTimeout(() => {
         setBounce(true);
-      }, 1000); // Adjust the bounce duration as needed
+      }, 1000);
       const timeout3 = setTimeout(() => {
         setBounce(false);
-      }, 1500); // Adjust the bounce duration as needed
+      }, 1500);
 
       return () => {
         clearTimeout(timeout1);
@@ -51,7 +51,7 @@ const Marker = ({latitude, longitude, onClick, isDropped}) => {
         color: 'red',
         fontSize: '20px',
         position: 'relative',
-        top: bounce ? -10 : 0, // Adjust the bounce height as needed
+        top: bounce ? -10 : 0,
         transition: 'top 0.5s ease',
         cursor: 'pointer',
       }}
@@ -115,7 +115,7 @@ export default function Resources() {
   };
 
   return (
-    <div style={{marginTop: '80px', marginLeft: '150px', marginRight: '150px'}}>
+    <div style={{marginTop: '80px', marginLeft: '250px', marginRight: '250px'}}>
       <h1>Resources</h1>
       <div
         style={{
@@ -149,10 +149,10 @@ export default function Resources() {
             </Paper>
           ))}
         </div>
-        <div style={{width: '500px', height: '300px', marginLeft: '20px'}}>
+        <div style={{width: '500px', height: '500px'}}>
           <GoogleMapReact
             bootstrapURLKeys={{key: 'AIzaSyD9qoPVKR16zb1xStq2te9gLCneUxiWejo'}}
-            defaultCenter={{lat: 43.642, lng: -79.368}}
+            defaultCenter={{lat: 43.65, lng: -79.386}}
             defaultZoom={13}
           >
             {resources.map(resource => (
