@@ -10,6 +10,8 @@ import UniversitySelection from './UniversitySelection';
 import GraduationYearSelection from './GraduationYearSelection';
 import RelevantSkills from './RelevantSkills';
 import Company from './Company';
+import callApiAddStudentTraits from './callApiAddStudentTraits';
+import callApiAddProfessionalTraits from './callApiAddProfessionalTraits';
 
 function App() {
   const [selectedProgram, setSelectedProgram] = useState('');
@@ -23,7 +25,7 @@ function App() {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
 
-  const [userType, setUserType] = useState('professional'); // ['student', 'professional']
+  const [userType, setUserType] = useState('professional'); // This will be updated based on the user session userType
 
   const handleProgramChange = program => {
     setSelectedProgram(program);
@@ -65,25 +67,45 @@ function App() {
     setEndTime(time);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (userType === 'student') {
+      const studentData = {
+        university: selectedUniversity,
+        program: selectedProgram,
+        graduation_year: selectedYear,
+        career_interest: selectedInterest,
+        skills: skills,
+      };
+
       console.log('University:', selectedUniversity);
       console.log('Program:', selectedProgram);
       console.log('Year:', selectedYear);
       console.log('Interest:', selectedInterest);
       console.log('Skills:', skills);
-      console.log('Selected Dates:', selectedDates);
-      console.log('Start Time:', startTime);
-      console.log('End Time:', endTime);
+
+      await callApiAddStudentTraits(studentData);
+
+      // console.log('Selected Dates:', selectedDates);
+      // console.log('Start Time:', startTime);
+      // console.log('End Time:', endTime);
     } else if (userType === 'professional') {
-      console.log('University:', selectedUniversity);
-      console.log('Program:', selectedProgram);
-      console.log('Company:', company);
-      console.log('Job Title:', jobTitle);
-      console.log('Skills:', skills);
-      console.log('Selected Dates:', selectedDates);
-      console.log('Start Time:', startTime);
-      console.log('End Time:', endTime);
+      const professionalData = {
+        university: selectedUniversity,
+        program: selectedProgram,
+        company: company,
+        job_title: jobTitle,
+        skills: skills,
+      };
+
+      await callApiAddProfessionalTraits(professionalData);
+      // console.log('University:', selectedUniversity);
+      // console.log('Program:', selectedProgram);
+      // console.log('Company:', company);
+      // console.log('Job Title:', jobTitle);
+      // console.log('Skills:', skills);
+      // console.log('Selected Dates:', selectedDates);
+      // console.log('Start Time:', startTime);
+      // console.log('End Time:', endTime);
     }
   };
 

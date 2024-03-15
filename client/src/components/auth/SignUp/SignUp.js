@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
+import {createUserWithEmailAndPassword} from 'firebase/auth';
 import callApiAddUser from './callApiAddUser';
+import {auth} from '../../../firebase';
 
-export default function SignUp({onBackToLogin}) {
+export default function SignUp({onSignUpSuccess}) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -14,18 +16,32 @@ export default function SignUp({onBackToLogin}) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const userData = {
-      firstName: firstName,
-      lastName: lastName,
-      password: password,
-      emailaddress: email,
-      userType: userType,
-    };
 
-    console.log(userData);
-    callApiAddUser(serverURL, userData)
-      .then(response => {
-        onBackToLogin();
+    if (password !== confirmPassword) {
+      console.error('Passwords do not match');
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        const user = userCredential.user;
+        console.log(user);
+        return user.updateProfile({
+          displayName: `${firstName} ${lastName}`,
+          userType: userType,
+        });
+      })
+      .then(() => {
+        // Handle success
+        const userData = {
+          firstName: firstName,
+          lastName: lastName,
+          emailaddress: email,
+          userType: userType,
+        };
+        console.log(userData);
+        // callApiAddUser(serverURL, userData);
+        onSignUpSuccess();
       })
       .catch(error => {
         console.error('Signup failed:', error);

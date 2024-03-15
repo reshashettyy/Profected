@@ -8,7 +8,7 @@ import VideoEmbedding from '../VideoEmbedding';
 
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import SignUp from '../auth/SignUp/SignUp';
-import Login from '../Login/Login';
+import Login from '../auth/Login/Login';
 
 export default function App() {
   return (
