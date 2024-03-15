@@ -10,7 +10,7 @@ README updated March 15 2024
 - The navigation bar at the top of the application redirects the user to different pages - Home - Matching - MainCalendar - Resources - VideoEmbedding - User profile
   Note: The team plans on changing the names of pages in the navigation bar
 
-## Networking Platform Landing Page
+## Landing Page
 - Entry point for a networking platform connecting students and industry professionals.
 - Provides essential information, encourages action, and showcases professional profiles.
 - Visit landing page to learn about platform and features.
