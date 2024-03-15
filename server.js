@@ -41,4 +41,27 @@ app.post("/api/addUser", (req, res) => {
   connection.end();
 });
 
+app.post("/api/addStudentTraits", (req, res) => {
+  const { firstName, lastName, password, emailaddress, userType } = req.body;
+
+  let connection = mysql.createConnection(config);
+
+  const sql = `INSERT INTO Users (firstName, lastName, password, emailaddress, userType) 
+				 VALUES (?, ?, ?, ?, ?)`;
+
+  const data = [firstName, lastName, password, emailaddress, userType];
+
+  connection.query(sql, data, (error, results, fields) => {
+    if (error) {
+      console.error("Error adding User Type:", error.message);
+      return res
+        .status(500)
+        .json({ error: "Error adding user to the database" });
+    }
+
+    return res.status(200).json({ success: true });
+  });
+  connection.end();
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version

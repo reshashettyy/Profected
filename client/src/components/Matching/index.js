@@ -23,7 +23,7 @@ function App() {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
 
-  const [userType, setUserType] = useState('student'); // ['student', 'professional']
+  const [userType, setUserType] = useState('professional'); // ['student', 'professional']
 
   const handleProgramChange = program => {
     setSelectedProgram(program);

@@ -1,7 +1,9 @@
 import React from 'react';
 import {Calendar} from 'react-multi-date-picker';
 import DatePanel from 'react-multi-date-picker/plugins/date_panel';
-import TimePicker from 'react-multi-date-picker/plugins/time_picker';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {TimePicker} from '@mui/x-date-pickers/TimePicker';
 import DatePicker from 'react-multi-date-picker';
 
 export default function TimeDate({
@@ -12,11 +14,6 @@ export default function TimeDate({
   handleStartTimeChange,
   handleEndTimeChange,
 }) {
-  React.useEffect(() => {
-    console.log('Start Time: ' + startTime);
-    console.log('End Time: ' + endTime);
-  }, [startTime, endTime]);
-
   return (
     <>
       <div style={{width: '400px'}}>
@@ -34,31 +31,23 @@ export default function TimeDate({
         <div style={{display: 'flex', alignItems: 'center'}}>
           <div style={{marginRight: '20px'}}>
             <p>Start time:</p>
-            <DatePicker
-              disableDayPicker
-              format="hh:mm A"
-              plugins={[
-                <TimePicker
-                  value={startTime}
-                  hideSeconds
-                  onChange={handleStartTimeChange}
-                />,
-              ]}
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <TimePicker
+                value={startTime}
+                onChange={handleStartTimeChange}
+                style={{width: '100px'}}
+              />
+            </LocalizationProvider>
           </div>
           <div>
             <p>End time:</p>
-            <DatePicker
-              disableDayPicker
-              format="hh:mm A"
-              plugins={[
-                <TimePicker
-                  value={endTime}
-                  hideSeconds
-                  onChange={handleEndTimeChange}
-                />,
-              ]}
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <TimePicker
+                value={endTime}
+                onChange={handleEndTimeChange}
+                style={{width: '100px'}}
+              />
+            </LocalizationProvider>
           </div>
         </div>
       </div>

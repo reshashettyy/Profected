@@ -7,7 +7,7 @@ import Resources from '../Resources';
 import VideoEmbedding from '../VideoEmbedding';
 
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import SignUp from '../SignUp/SignUp';
+import SignUp from '../auth/SignUp/SignUp';
 import Login from '../Login/Login';
 
 export default function App() {
