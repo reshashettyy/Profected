@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
 import callApiAddUser from './callApiAddUser';
-import {auth} from '../../../firebase';
+import {useNavigate} from 'react-router-dom';
+import {withFirebase} from '../../Firebase';
 
-export default function SignUp({onSignUpSuccess}) {
+const SignUp = ({firebase}) => {
+  const [userID, setUserID] = useState('');
+  const [idToken, setIdToken] = useState('');
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -11,6 +14,8 @@ export default function SignUp({onSignUpSuccess}) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [userType, setUserType] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
+
+  const navigate = useNavigate();
 
   const serverURL = '';
 
@@ -22,23 +27,24 @@ export default function SignUp({onSignUpSuccess}) {
       return;
     }
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        console.log(userCredential);
-      })
-      .then(() => {
+    firebase
+      .doCreateUserWithEmailAndPassword(email, password)
+      .then(authUser => {
+        const uid = authUser.user.uid;
         const userData = {
+          userID: uid,
           firstName: firstName,
           lastName: lastName,
           emailaddress: email,
           userType: userType,
         };
-        console.log(userData);
-        // callApiAddUser(serverURL, userData);
-        onSignUpSuccess();
+
+        console.log('User data:', userData);
+
+        navigate('/login');
       })
       .catch(error => {
-        console.error('Signup failed:', error);
+        console.error('Error signing in:', error);
       });
   };
 
@@ -131,10 +137,9 @@ export default function SignUp({onSignUpSuccess}) {
           </div>
           <button type="submit">Sign Up</button>
         </form>
-        {/* <div className="back-to-login">
-                    <button onClick={onBackToLogin}>Back to Login</button>
-                </div> */}
       </div>
     </div>
   );
-}
+};
+
+export default withFirebase(SignUp);
