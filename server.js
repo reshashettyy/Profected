@@ -6,9 +6,18 @@ import path from "path";
 import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
 import response from "express";
+import admin from "firebase-admin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+import serviceAccount from "./serviceAccountKey.json" assert { type: "json" };
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL:
+    "https://team-28-user-authenticat-e3566-default-rtdb.firebaseio.com/",
+});
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -16,6 +25,23 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(express.static(path.join(__dirname, "client/build")));
+
+const checkAuth = (req, res, next) => {
+  const idToken = req.headers.authorization;
+  if (!idToken) {
+    return res.status(403).send("Unauthorized");
+  }
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then((decodedToken) => {
+      req.user = decodedToken;
+      next();
+    })
+    .catch((error) => {
+      res.status(403).send("Unauthorized");
+    });
+};
 
 //get all the resources from the database and into the calendar
 app.post("/api/getCalendar", (req, res) => {
@@ -58,15 +84,15 @@ app.post("/api/getResources", (req, res) => {
 });
 
 // API to add a user to the database
-app.post("/api/addUser", (req, res) => {
-  const { firstName, lastName, password, emailaddress, userType } = req.body;
+app.post("/api/addUser", checkAuth, (req, res) => {
+  const { userID, firstName, lastName, emailaddress, userType } = req.body;
 
   let connection = mysql.createConnection(config);
 
-  const sql = `INSERT INTO Users (firstName, lastName, password, emailaddress, userType) 
+  const sql = `INSERT INTO Users (userID, firstName, lastName, emailaddress, userType) 
 				 VALUES (?, ?, ?, ?, ?)`;
 
-  const data = [firstName, lastName, password, emailaddress, userType];
+  const data = [userID, firstName, lastName, emailaddress, userType];
 
   connection.query(sql, data, (error, results, fields) => {
     if (error) {

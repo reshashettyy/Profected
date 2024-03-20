@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
 import './Login.css';
-import SignUp from '../SignUp/SignUp';
 import {useNavigate} from 'react-router-dom';
-import {auth} from '../../../firebase';
-import {signInWithEmailAndPassword} from 'firebase/auth';
+import {withFirebase} from '../../Firebase';
 
-export default function Login() {
+const Login = ({firebase}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -14,7 +12,9 @@ export default function Login() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
+
+    firebase
+      .doSignInWithEmailAndPassword(email, password)
       .then(userCredential => {
         console.log(userCredential);
         navigate('/');
@@ -26,11 +26,7 @@ export default function Login() {
   };
 
   const handleSignUpClick = () => {
-    setCurrentPage('signup');
-  };
-
-  const handleSignUpSuccess = () => {
-    setCurrentPage('login');
+    navigate('/signup');
   };
 
   return (
@@ -80,9 +76,7 @@ export default function Login() {
           </form>
         </div>
       )}
-      {currentPage === 'signup' && (
-        <SignUp onSignUpSuccess={handleSignUpSuccess} />
-      )}
     </div>
   );
-}
+};
+export default withFirebase(Login);

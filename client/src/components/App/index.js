@@ -1,28 +1,29 @@
-import * as React from 'react';
-import Navigation from '../Navigation/Navigation';
-import Landing from '../Landing/Landing';
-import Matching from '../Matching';
-import MainCalendar from '../Calendar/Calendar';
-import Resources from '../Resources';
-import VideoEmbedding from '../VideoEmbedding';
+import React, {useState, useEffect, useContext} from 'react';
+import {BrowserRouter as Router} from 'react-router-dom';
+import PrivateRoute from '../Navigation/PrivateRoute';
+import {FirebaseContext} from '../Firebase';
 
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import SignUp from '../auth/SignUp/SignUp';
-import Login from '../auth/Login/Login';
+const App = () => {
+  const [authUser, setAuthUser] = useState(null);
+  const firebase = useContext(FirebaseContext);
 
-export default function App() {
+  useEffect(() => {
+    if (firebase) {
+      const listener = firebase.auth.onAuthStateChanged(user => {
+        if (user) {
+          setAuthUser(user);
+        } else {
+          setAuthUser(null);
+        }
+      });
+      return () => listener();
+    }
+  }, [firebase]);
+  const authenticated = !!authUser;
   return (
-    <Router>
-      <Navigation />
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/matching" element={<Matching />} />
-        <Route path="/SignUp" element={<SignUp />} />
-        <Route path="/maincalendar" element={<MainCalendar />} />
-        <Route path="/resources" element={<Resources />} />
-        <Route path="/videoembedding" element={<VideoEmbedding />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
+    <div>
+      <PrivateRoute authenticated={authenticated} authUser={authUser} />
+    </div>
   );
-}
+};
+export default App;
