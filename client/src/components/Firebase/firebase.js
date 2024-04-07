@@ -8,6 +8,7 @@ import {
   sendPasswordResetEmail,
   updatePassword,
 } from 'firebase/auth';
+import {getFirestore} from 'firebase/firestore'; // Import Firestore
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -25,6 +26,7 @@ const app = initializeApp(firebaseConfig);
 class Firebase {
   constructor() {
     this.auth = getAuth(app);
+    this.db = getFirestore(app); // Initialize Firestore
   }
 
   // *** Auth API ***
@@ -58,6 +60,10 @@ class Firebase {
         reject(new Error('No user is signed in.'));
       }
     });
+  };
+
+  getCurrentUserId = () => {
+    return this.auth.currentUser ? this.auth.currentUser.uid : null;
   };
 }
 

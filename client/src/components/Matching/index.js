@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState, useEffect} from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -13,8 +13,12 @@ import RelevantSkills from './RelevantSkills';
 import Company from './Company';
 import callApiAddStudentTraits from './callApiAddStudentTraits';
 import callApiAddProfessionalTraits from './callApiAddProfessionalTraits';
+import {doc, getDoc} from 'firebase/firestore';
+import {withFirebase} from '../Firebase';
+import callApiAddStudentAvailaibility from './callApiAddStudentAvailability';
+import callApiAddProfessionalAvailaibility from './callApiAddProfessionalAvailaibility';
 
-function App() {
+function Matching({firebase}) {
   const [selectedProgram, setSelectedProgram] = useState('');
   const [selectedUniversity, setSelectedUniversity] = useState('');
   const [selectedInterest, setSelectedInterest] = useState('');
@@ -26,7 +30,8 @@ function App() {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
 
-  const [userType, setUserType] = useState('professional');
+
+  const [userType, setUserType] = useState('');
 
   const handleProgramChange = (program) => {
     setSelectedProgram(program);
@@ -56,41 +61,136 @@ function App() {
     setCompany(event.target.value);
   };
 
-  const handleDatesChange = (dates) => {
-    setSelectedDates(dates);
+  const handleDatesChange = dates => {
+    const formattedDates = dates.map(date => {
+      const year = date.year;
+      const month = String(date.month).padStart(2, '0'); // Ensure month is two digits
+      const day = String(date.day).padStart(2, '0'); // Ensure day is two digits
+      return `${year}/${month}/${day}`;
+    });
+    setSelectedDates(formattedDates);
   };
 
-  const handleStartTimeChange = (time) => {
-    setStartTime(time);
+  const handleStartTimeChange = time => {
+    setStartTime(time.format('HH:mm'));
   };
 
-  const handleEndTimeChange = (time) => {
-    setEndTime(time);
+  const handleEndTimeChange = time => {
+    setEndTime(time.format('HH:mm'));
+  };
+
+  const resetStates = () => {
+    setSelectedProgram('');
+    setSelectedUniversity('');
+    setSelectedInterest('');
+    setSelectedYear('');
+    setSkills('');
+    setJobTitle('');
+    setCompany('');
+    setSelectedDates([]);
+    setStartTime('');
+    setEndTime('');
+  };
+
+  const checkUserSubmission = async userID => {
+    try {
+      const response = await fetch('/api/checkUserSubmission', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: await firebase.doGetIdToken(),
+        },
+        body: JSON.stringify({userID}),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      return result.exists;
+    } catch (error) {
+      console.error('Error checking user submission:', error);
+      throw error;
+    }
   };
 
   const handleSubmit = async () => {
-    if (userType === 'student') {
-      const studentData = {
-        university: selectedUniversity,
-        program: selectedProgram,
-        graduation_year: selectedYear,
-        career_interest: selectedInterest,
-        skills: skills,
-      };
+    const userId = firebase.getCurrentUserId();
 
-      await callApiAddStudentTraits(studentData);
-    } else if (userType === 'professional') {
-      const professionalData = {
-        university: selectedUniversity,
-        program: selectedProgram,
-        company: company,
-        job_title: jobTitle,
-        skills: skills,
-      };
+    const hasSubmitted = await checkUserSubmission(userId);
+    if (hasSubmitted) {
+      alert('You have already submitted the form.');
+      return;
+    }
 
-      await callApiAddProfessionalTraits(professionalData);
+    const idToken = await firebase.doGetIdToken();
+
+    try {
+      if (userType === 'student') {
+        const studentData = {
+          university: selectedUniversity,
+          program: selectedProgram,
+          graduation_year: selectedYear,
+          career_interest: selectedInterest,
+          skills: skills,
+          userID: userId,
+        };
+
+        const studentAvailaibility = {
+          userID: userId,
+          dates: selectedDates.join(','),
+          start_time: startTime,
+          end_time: endTime,
+        };
+
+        await callApiAddStudentAvailaibility(idToken, studentAvailaibility);
+        await callApiAddStudentTraits(idToken, studentData);
+      } else if (userType === 'professional') {
+        const professionalData = {
+          university: selectedUniversity,
+          program: selectedProgram,
+          company: company,
+          job_title: jobTitle,
+          skills: skills,
+          userID: userId,
+        };
+        const professionalAvailaibility = {
+          userID: userId,
+          dates: selectedDates.join(','),
+          start_time: startTime,
+          end_time: endTime,
+        };
+
+        await callApiAddProfessionalAvailaibility(
+          idToken,
+          professionalAvailaibility,
+        );
+        await callApiAddProfessionalTraits(idToken, professionalData);
+      }
+      resetStates();
+    } catch (error) {
+      console.error('Error submitting form:', error);
     }
   };
+
+  useEffect(() => {
+    const fetchUserType = async () => {
+      const userId = firebase.getCurrentUserId();
+      if (userId) {
+        const userRef = doc(firebase.db, 'users', userId);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          setUserType(userDoc.data().userType);
+          console.log('User type:', userDoc.data().userType);
+        } else {
+          console.log('No such document!');
+        }
+      }
+    };
+
+    fetchUserType();
+  }, [firebase]);
 
   return (
     <Box
@@ -169,4 +269,4 @@ function App() {
   );
 }
 
-export default App;
+export default withFirebase(Matching);
