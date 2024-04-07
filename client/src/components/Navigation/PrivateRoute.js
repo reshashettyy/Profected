@@ -1,29 +1,41 @@
 import * as React from 'react';
+import {Route, Routes, Navigate} from 'react-router-dom';
 import Navigation from '../Navigation/Navigation';
 import Landing from '../Landing/Landing';
 import Matching from '../Matching';
 import MainCalendar from '../Calendar/Calendar';
 import Resources from '../Resources';
-import VideoEmbedding from '../VideoEmbedding';
-
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import SignUp from '../auth/SignUp/SignUp';
 import Login from '../auth/Login/Login';
 
-const PrivateRoute = ({authenticated}) => {
+const PrivateRoute = ({authUser}) => {
+  const isAuthenticated = !!authUser;
+
   return (
-    <Router>
-      <Navigation />
+    <React.Fragment>
+      <Navigation isAuthenticated={isAuthenticated} />
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/matching" element={<Matching />} />
+        <Route
+          path="/matching"
+          element={authUser ? <Matching /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/maincalendar"
+          element={authUser ? <MainCalendar /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/resources"
+          element={authUser ? <Resources /> : <Navigate to="/login" />}
+        />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/maincalendar" element={<MainCalendar />} />
-        <Route path="/resources" element={<Resources />} />
-        <Route path="/videoembedding" element={<VideoEmbedding />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={authUser ? <Navigate to="/" /> : <Login />}
+        />
       </Routes>
-    </Router>
+    </React.Fragment>
   );
 };
+
 export default PrivateRoute;

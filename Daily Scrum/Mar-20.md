@@ -6,12 +6,12 @@
 
 # Gavneet
 
-- Yesterday I finished adding markers to the Google Maps for each conferance
+- Yesterday I continued to work on adding the filtering component on the resources page
 - N/A
-- I completed reading data from the database for the calender
+- Today I will complete the filtering component added to the resources page
 
 # Resha
 
-- Yesterday I added prodiles for all the individuals on the landing page
+- Yesterday I continued to work on individual profiles and added more sections
 - N/A
-- Today I completed the landing page that has buttons, descriptions, and added a pop-up box when the user clicks the profile that includes a bio and why a students should book a time with them.
+- Today, I will continue to work on individual profiles and fix any bugs that may populate

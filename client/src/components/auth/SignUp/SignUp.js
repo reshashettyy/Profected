@@ -4,9 +4,6 @@ import {useNavigate} from 'react-router-dom';
 import {withFirebase} from '../../Firebase';
 
 const SignUp = ({firebase}) => {
-  const [userID, setUserID] = useState('');
-  const [idToken, setIdToken] = useState('');
-
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
