@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import {Button} from '@mui/material';
@@ -12,8 +12,10 @@ import RelevantSkills from './RelevantSkills';
 import Company from './Company';
 import callApiAddStudentTraits from './callApiAddStudentTraits';
 import callApiAddProfessionalTraits from './callApiAddProfessionalTraits';
+import {doc, getDoc} from 'firebase/firestore';
+import {withFirebase} from '../Firebase';
 
-function App() {
+function Matching({firebase}) {
   const [selectedProgram, setSelectedProgram] = useState('');
   const [selectedUniversity, setSelectedUniversity] = useState('');
   const [selectedInterest, setSelectedInterest] = useState('');
@@ -25,7 +27,7 @@ function App() {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
 
-  const [userType, setUserType] = useState('professional'); // This will be updated based on the user session userType
+  const [userType, setUserType] = useState('');
 
   const handleProgramChange = program => {
     setSelectedProgram(program);
@@ -77,17 +79,11 @@ function App() {
         skills: skills,
       };
 
-      console.log('University:', selectedUniversity);
-      console.log('Program:', selectedProgram);
-      console.log('Year:', selectedYear);
-      console.log('Interest:', selectedInterest);
-      console.log('Skills:', skills);
-
       await callApiAddStudentTraits(studentData);
 
-      // console.log('Selected Dates:', selectedDates);
-      // console.log('Start Time:', startTime);
-      // console.log('End Time:', endTime);
+      console.log('Selected Dates:', selectedDates);
+      console.log('Start Time:', startTime);
+      console.log('End Time:', endTime);
     } else if (userType === 'professional') {
       const professionalData = {
         university: selectedUniversity,
@@ -98,16 +94,34 @@ function App() {
       };
 
       await callApiAddProfessionalTraits(professionalData);
-      // console.log('University:', selectedUniversity);
-      // console.log('Program:', selectedProgram);
-      // console.log('Company:', company);
-      // console.log('Job Title:', jobTitle);
-      // console.log('Skills:', skills);
-      // console.log('Selected Dates:', selectedDates);
-      // console.log('Start Time:', startTime);
-      // console.log('End Time:', endTime);
+      console.log('University:', selectedUniversity);
+      console.log('Program:', selectedProgram);
+      console.log('Company:', company);
+      console.log('Job Title:', jobTitle);
+      console.log('Skills:', skills);
+      console.log('Selected Dates:', selectedDates);
+      console.log('Start Time:', startTime);
+      console.log('End Time:', endTime);
     }
   };
+
+  useEffect(() => {
+    const fetchUserType = async () => {
+      const userId = firebase.getCurrentUserId();
+      if (userId) {
+        const userRef = doc(firebase.db, 'users', userId);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          setUserType(userDoc.data().userType);
+          console.log('User type:', userDoc.data().userType);
+        } else {
+          console.log('No such document!');
+        }
+      }
+    };
+
+    fetchUserType();
+  }, [firebase]);
 
   return (
     <Box
@@ -218,4 +232,4 @@ function App() {
   );
 }
 
-export default App;
+export default withFirebase(Matching);
