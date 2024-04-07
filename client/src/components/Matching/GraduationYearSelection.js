@@ -12,7 +12,7 @@ function GraduationYearSelection({selectedYear, handleYearChange}) {
   return (
     <div>
       <h3>Select your Graduation Year:</h3>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel id="year-select-label">
           Select your Graduation Year:
         </InputLabel>

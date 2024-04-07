@@ -6,6 +6,7 @@ function RelevantSkills({skills, handleSkillsChange}) {
     <div>
       <h3>Enter your Relevant Skills: </h3>
       <TextField
+        required
         label="Enter your relevant skills (separated by comma)"
         variant="outlined"
         fullWidth

@@ -1,9 +1,10 @@
-async function callApiAddProfessionalTraits(userData) {
+async function callApiAddProfessionalTraits(idToken, userData) {
   try {
     const response = await fetch('/api/addProfessionalTraits', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: idToken,
       },
       body: JSON.stringify(userData),
     });

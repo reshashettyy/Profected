@@ -10,20 +10,19 @@ const App = () => {
   useEffect(() => {
     if (firebase) {
       const listener = firebase.auth.onAuthStateChanged(user => {
-        if (user) {
-          setAuthUser(user);
-        } else {
-          setAuthUser(null);
-        }
+        setAuthUser(user);
       });
       return () => listener();
     }
   }, [firebase]);
-  const authenticated = !!authUser;
+
   return (
     <div>
-      <PrivateRoute authenticated={authenticated} authUser={authUser} />
+      <Router>
+        <PrivateRoute authUser={authUser} />
+      </Router>
     </div>
   );
 };
+
 export default App;
