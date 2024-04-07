@@ -13,8 +13,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Firebase from '../Firebase';
 
-const settings = ['Logout'];
-
 function Navigation({isAuthenticated}) {
   const authPages = ['Home', 'Matching', 'MainCalendar', 'Resources'];
   const guestPages = ['Home', 'Login'];
@@ -44,11 +42,9 @@ function Navigation({isAuthenticated}) {
     firebase
       .doSignOut()
       .then(() => {
-        // Handle successful logout, e.g., redirect to login page
         console.log('Logged out successfully');
       })
       .catch(error => {
-        // Handle logout error
         console.error('Error occurred during logout:', error);
       });
   };
@@ -111,7 +107,7 @@ function Navigation({isAuthenticated}) {
                 to={page === 'Home' ? '/' : `/${page.toLowerCase()}`}
                 onClick={handleCloseNavMenu}
                 sx={{
-                  color: 'black', // Changed font color to black
+                  color: 'black',
                   textDecoration: 'none',
                   textTransform: 'uppercase',
                   fontWeight: 700,
@@ -125,42 +121,41 @@ function Navigation({isAuthenticated}) {
             ))}
           </Box>
 
-          <Box sx={{flexGrow: 0, marginLeft: 'auto'}}>
-            <Tooltip title="Logout?">
-              <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                <Avatar alt="User Avatar" src="/static/images/avatar.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{mt: '45px'}}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map(setting => (
+          {isAuthenticated && (
+            <Box sx={{flexGrow: 0, marginLeft: 'auto'}}>
+              <Tooltip title="Logout?">
+                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                  <Avatar alt="User Avatar" src="/static/images/avatar.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{mt: '45px'}}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
                 <MenuItem
-                  key={setting}
                   onClick={handleLogout}
                   sx={{
                     color: 'inherit',
                     textDecoration: 'none',
                   }}
                 >
-                  {setting}
+                  Logout
                 </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
