@@ -5,7 +5,6 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
-import response from "express";
 import admin from "firebase-admin";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -241,6 +240,183 @@ app.post("/api/checkUserSubmission", checkAuth, (req, res) => {
       results.length > 0 && results.some((row) => row.userExists === 1);
     connection.end();
     res.status(200).json({ exists: userExists });
+  });
+});
+
+// Backend (Express.js)
+app.get("/api/getUserProfile", checkAuth, (req, res) => {
+  const uid = req.user.uid;
+
+  let connection = mysql.createConnection(config);
+
+  const userSql = "SELECT * FROM Users WHERE userID = ?";
+  connection.query(userSql, [uid], (error, userResults) => {
+    if (error) {
+      console.error("Error fetching user information:", error.message);
+      connection.end();
+      return res.status(500).json({ error: "Database query error" });
+    }
+
+    if (userResults.length > 0) {
+      const user = userResults[0];
+      const table =
+        user.userType === "professional"
+          ? "ProfessionalTraits"
+          : "StudentTraits";
+      const detailsSql = `SELECT * FROM ${table} WHERE userID = ?`;
+
+      connection.query(detailsSql, [uid], (detailsError, detailsResults) => {
+        connection.end();
+        if (detailsError) {
+          console.error(
+            `Error fetching ${user.userType} details:`,
+            detailsError.message
+          );
+          return res.status(500).json({ error: "Database query error" });
+        }
+
+        res.status(200).json({ user, details: detailsResults[0] });
+      });
+    } else {
+      connection.end();
+      res.status(404).json({ error: "User not found" });
+    }
+  });
+});
+
+app.post("/api/updateUserDetails", checkAuth, (req, res) => {
+  const { userID, userType, updatedDetails } = req.body;
+
+  let connection = mysql.createConnection(config);
+
+  let sql;
+  let data;
+  console.log(req.body.userType);
+  if (req.body.userType === "student") {
+    sql = `UPDATE StudentTraits SET university=?, program=?, graduation_year=?, career_interest=?, skills=? WHERE userID=?`;
+    data = [
+      updatedDetails.university,
+      updatedDetails.program,
+      updatedDetails.graduation_year,
+      updatedDetails.career_interest,
+      updatedDetails.skills,
+      userID,
+    ];
+  } else if (req.body.userType === "professional") {
+    sql = `UPDATE ProfessionalTraits SET university=?, program=?, company=?, job_title=?, skills=? WHERE userID=?`;
+    data = [
+      updatedDetails.university,
+      updatedDetails.program,
+      updatedDetails.company,
+      updatedDetails.job_title,
+      updatedDetails.skills,
+      userID,
+    ];
+  } else {
+    return res.status(400).json({ error: "Invalid userType" });
+  }
+
+  connection.query(sql, data, (error, results, fields) => {
+    if (error) {
+      console.error("Error updating user details:", error.message);
+      return res.status(500).json({ error: "Error updating user details" });
+    }
+
+    return res.status(200).json({ success: true });
+  });
+
+  connection.end();
+});
+
+app.post("/api/getMatched", checkAuth, async (req, res) => {
+  console.log("Request body:", req.body);
+
+  const { userID } = req.body;
+
+  console.log("userID:", userID);
+
+  let connection = mysql.createConnection(config);
+  let sql = "SELECT * FROM StudentTraits WHERE userID = ?";
+
+  connection.query(sql, [userID], async (error, results) => {
+    if (error) {
+      console.error("Error fetching user profile:", error.message);
+      connection.end();
+      return res.status(500).json({ error: "Error fetching user profile" });
+    }
+
+    console.log("User profile:", results);
+
+    if (results.length === 0) {
+      connection.end();
+      return res.status(404).json({ error: "User profile not found" });
+    }
+
+    const userProfile = {
+      university: results[0].university,
+      program: results[0].program,
+      career_interest: results[0].career_interest,
+      skills: results[0].skills,
+    };
+
+    // Log the userProfile to see if it's being constructed correctly
+    console.log("Constructed userProfile:", userProfile);
+
+    try {
+      const pythonServiceResponse = await fetch("http://127.0.0.1:8000/match", {
+        method: "POST",
+        body: JSON.stringify(userProfile),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!pythonServiceResponse.ok) {
+        throw new Error(
+          `Python service returned status: ${pythonServiceResponse.status}`
+        );
+      }
+
+      const matchedProfessional = await pythonServiceResponse.json();
+      connection.end();
+      res.status(200).json(matchedProfessional);
+    } catch (pythonServiceError) {
+      console.error(
+        "Error during matching process:",
+        pythonServiceError.message
+      );
+      connection.end();
+      res.status(500).json({ error: "Error during matching process" });
+    }
+  });
+});
+
+app.post("/api/getProfessionalInfo", checkAuth, (req, res) => {
+  const { professionalId } = req.body;
+
+  let connection = mysql.createConnection(config);
+
+  const sql = `
+    SELECT u.firstName, u.lastName, p.university, p.program, p.company, p.job_title, p.skills
+    FROM Users u
+    JOIN ProfessionalTraits p ON u.userID = p.userID
+    WHERE u.userID = ?
+  `;
+
+  connection.query(sql, [professionalId], (error, results) => {
+    if (error) {
+      console.error("Error fetching professional info:", error.message);
+      connection.end();
+      return res
+        .status(500)
+        .json({ error: "Error fetching professional info" });
+    }
+
+    if (results.length === 0) {
+      connection.end();
+      return res.status(404).json({ error: "Professional not found" });
+    }
+
+    connection.end();
+    res.status(200).json(results[0]);
   });
 });
 
