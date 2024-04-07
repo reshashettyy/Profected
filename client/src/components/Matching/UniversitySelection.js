@@ -28,7 +28,7 @@ function UniversitySelection({selectedUniversity, handleUniversityChange}) {
   return (
     <div>
       <h3>Select your University:</h3>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel id="university-select-label">
           Select your University:
         </InputLabel>

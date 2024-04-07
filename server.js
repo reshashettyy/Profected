@@ -217,4 +217,31 @@ app.post("/api/addProfessionalAvailability", checkAuth, (req, res) => {
   connection.end();
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
+app.post("/api/checkUserSubmission", checkAuth, (req, res) => {
+  const { userID } = req.body;
+
+  let connection = mysql.createConnection(config);
+
+  const sql = `
+    SELECT EXISTS(
+      SELECT 1 FROM StudentTraits WHERE userID = ? 
+      UNION ALL 
+      SELECT 1 FROM ProfessionalTraits WHERE userID = ?
+    ) AS userExists
+  `;
+
+  connection.query(sql, [userID, userID], (error, results) => {
+    if (error) {
+      console.error("Error checking User Submission:", error.message);
+      connection.end();
+      return res.status(500).json({ error: "Database query error" });
+    }
+
+    const userExists =
+      results.length > 0 && results.some((row) => row.userExists === 1);
+    connection.end();
+    res.status(200).json({ exists: userExists });
+  });
+});
+
+app.listen(port, () => console.log(`Listening on port ${port}`));

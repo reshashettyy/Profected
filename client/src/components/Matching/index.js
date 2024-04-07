@@ -77,49 +77,98 @@ function Matching({firebase}) {
     setEndTime(time.format('HH:mm'));
   };
 
+  const resetStates = () => {
+    setSelectedProgram('');
+    setSelectedUniversity('');
+    setSelectedInterest('');
+    setSelectedYear('');
+    setSkills('');
+    setJobTitle('');
+    setCompany('');
+    setSelectedDates([]);
+    setStartTime('');
+    setEndTime('');
+  };
+
+  const checkUserSubmission = async userID => {
+    try {
+      const response = await fetch('/api/checkUserSubmission', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: await firebase.doGetIdToken(),
+        },
+        body: JSON.stringify({userID}),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      return result.exists;
+    } catch (error) {
+      console.error('Error checking user submission:', error);
+      throw error;
+    }
+  };
+
   const handleSubmit = async () => {
     const userId = firebase.getCurrentUserId();
+
+    const hasSubmitted = await checkUserSubmission(userId);
+    if (hasSubmitted) {
+      alert('You have already submitted the form.');
+      return;
+    }
+
     const idToken = await firebase.doGetIdToken();
-    if (userType === 'student') {
-      const studentData = {
-        university: selectedUniversity,
-        program: selectedProgram,
-        graduation_year: selectedYear,
-        career_interest: selectedInterest,
-        skills: skills,
-        userID: userId,
-      };
 
-      const studentAvailaibility = {
-        userID: userId,
-        dates: selectedDates.join(','),
-        start_time: startTime,
-        end_time: endTime,
-      };
+    try {
+      if (userType === 'student') {
+        const studentData = {
+          university: selectedUniversity,
+          program: selectedProgram,
+          graduation_year: selectedYear,
+          career_interest: selectedInterest,
+          skills: skills,
+          userID: userId,
+        };
 
-      await callApiAddStudentAvailaibility(idToken, studentAvailaibility);
-      await callApiAddStudentTraits(idToken, studentData);
-    } else if (userType === 'professional') {
-      const professionalData = {
-        university: selectedUniversity,
-        program: selectedProgram,
-        company: company,
-        job_title: jobTitle,
-        skills: skills,
-        userID: userId,
-      };
-      const professionalAvailaibility = {
-        userID: userId,
-        dates: selectedDates.join(','),
-        start_time: startTime,
-        end_time: endTime,
-      };
+        const studentAvailaibility = {
+          userID: userId,
+          dates: selectedDates.join(','),
+          start_time: startTime,
+          end_time: endTime,
+        };
 
-      await callApiAddProfessionalAvailaibility(
-        idToken,
-        professionalAvailaibility,
-      );
-      await callApiAddProfessionalTraits(idToken, professionalData);
+        await callApiAddStudentAvailaibility(idToken, studentAvailaibility);
+        await callApiAddStudentTraits(idToken, studentData);
+      } else if (userType === 'professional') {
+        const professionalData = {
+          university: selectedUniversity,
+          program: selectedProgram,
+          company: company,
+          job_title: jobTitle,
+          skills: skills,
+          userID: userId,
+        };
+        const professionalAvailaibility = {
+          userID: userId,
+          dates: selectedDates.join(','),
+          start_time: startTime,
+          end_time: endTime,
+        };
+
+        await callApiAddProfessionalAvailaibility(
+          idToken,
+          professionalAvailaibility,
+        );
+        await callApiAddProfessionalTraits(idToken, professionalData);
+      }
+      resetStates();
+    } catch (error) {
+      console.error('Error submitting form:', error);
     }
   };
 
