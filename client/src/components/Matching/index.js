@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import {Button} from '@mui/material';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import ProgramSelection from './ProgramSelection';
 import JobTitle from './JobTitle';
 import CareerSelection from './CareerSelection';
@@ -25,45 +26,45 @@ function App() {
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
 
-  const [userType, setUserType] = useState('professional'); // This will be updated based on the user session userType
+  const [userType, setUserType] = useState('professional');
 
-  const handleProgramChange = program => {
+  const handleProgramChange = (program) => {
     setSelectedProgram(program);
   };
 
-  const handleInterestChange = interest => {
+  const handleInterestChange = (interest) => {
     setSelectedInterest(interest);
   };
 
-  const handleUniversityChange = university => {
+  const handleUniversityChange = (university) => {
     setSelectedUniversity(university);
   };
 
-  const handleYearChange = year => {
+  const handleYearChange = (year) => {
     setSelectedYear(year);
   };
 
-  const handleSkillsChange = event => {
+  const handleSkillsChange = (event) => {
     setSkills(event.target.value);
   };
 
-  const handleJobTitleChange = event => {
+  const handleJobTitleChange = (event) => {
     setJobTitle(event.target.value);
   };
 
-  const handleCompanyChange = event => {
+  const handleCompanyChange = (event) => {
     setCompany(event.target.value);
   };
 
-  const handleDatesChange = dates => {
+  const handleDatesChange = (dates) => {
     setSelectedDates(dates);
   };
 
-  const handleStartTimeChange = time => {
+  const handleStartTimeChange = (time) => {
     setStartTime(time);
   };
 
-  const handleEndTimeChange = time => {
+  const handleEndTimeChange = (time) => {
     setEndTime(time);
   };
 
@@ -77,17 +78,7 @@ function App() {
         skills: skills,
       };
 
-      console.log('University:', selectedUniversity);
-      console.log('Program:', selectedProgram);
-      console.log('Year:', selectedYear);
-      console.log('Interest:', selectedInterest);
-      console.log('Skills:', skills);
-
       await callApiAddStudentTraits(studentData);
-
-      // console.log('Selected Dates:', selectedDates);
-      // console.log('Start Time:', startTime);
-      // console.log('End Time:', endTime);
     } else if (userType === 'professional') {
       const professionalData = {
         university: selectedUniversity,
@@ -98,14 +89,6 @@ function App() {
       };
 
       await callApiAddProfessionalTraits(professionalData);
-      // console.log('University:', selectedUniversity);
-      // console.log('Program:', selectedProgram);
-      // console.log('Company:', company);
-      // console.log('Job Title:', jobTitle);
-      // console.log('Skills:', skills);
-      // console.log('Selected Dates:', selectedDates);
-      // console.log('Start Time:', startTime);
-      // console.log('End Time:', endTime);
     }
   };
 
@@ -117,103 +100,71 @@ function App() {
       minHeight="100vh"
       px={2}
     >
-      <Grid container spacing={2} style={{maxWidth: 400}}>
-        {userType === 'student' && (
-          <>
-            <Grid item xs={12}>
-              <Box>
-                <UniversitySelection
-                  selectedUniversity={selectedUniversity}
-                  handleUniversityChange={handleUniversityChange}
+      <Box>
+        <Typography variant="h4" gutterBottom align="center">
+          Let's get you Matched!
+        </Typography>
+        <Grid container spacing={3} style={{ maxWidth: 800 }}>
+          {/* Left Side */}
+          <Grid item xs={12} md={6}>
+            <UniversitySelection
+              selectedUniversity={selectedUniversity}
+              handleUniversityChange={handleUniversityChange}
+            />
+            <ProgramSelection
+              selectedProgram={selectedProgram}
+              handleProgramChange={handleProgramChange}
+            />
+            {userType === 'professional' && (
+              <>
+                <Company
+                  company={company}
+                  handleCompanyChange={handleCompanyChange}
                 />
-              </Box>
-              <Box pb={2}>
-                <ProgramSelection
-                  selectedProgram={selectedProgram}
-                  handleProgramChange={handleProgramChange}
+                <JobTitle
+                  jobTitle={jobTitle}
+                  handleJobTitleChange={handleJobTitleChange}
                 />
-              </Box>
-              <Box pb={2}>
-                <GraduationYearSelection
-                  selectedYear={selectedYear}
-                  handleYearChange={handleYearChange}
-                />
-              </Box>
-
-              <Box pb={2}>
-                <CareerSelection
-                  selectedInterest={selectedInterest}
-                  handleInterestChange={handleInterestChange}
-                />
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box pb={2}>
-                <RelevantSkills
-                  skills={skills}
-                  handleSkillsChange={handleSkillsChange}
-                />
-              </Box>
-            </Grid>
-          </>
-        )}
-        {userType === 'professional' && (
-          <Grid item xs={12}>
-            <Box>
-              <UniversitySelection
-                selectedUniversity={selectedUniversity}
-                handleUniversityChange={handleUniversityChange}
-              />
-            </Box>
-            <Box pb={2}>
-              <ProgramSelection
-                selectedProgram={selectedProgram}
-                handleProgramChange={handleProgramChange}
-              />
-            </Box>
-            <Box pb={2}>
-              <Company
-                company={company}
-                handleCompanyChange={handleCompanyChange}
-              />
-            </Box>
-            <Box pd={2}>
-              <JobTitle
-                jobTitle={jobTitle}
-                handleJobTitleChange={handleJobTitleChange}
-              />
-            </Box>
-            <Grid item xs={12}>
-              <Box pb={2}>
-                <RelevantSkills
-                  skills={skills}
-                  handleSkillsChange={handleSkillsChange}
-                />
-              </Box>
-            </Grid>
+              </>
+            )}
+            <GraduationYearSelection
+              selectedYear={selectedYear}
+              handleYearChange={handleYearChange}
+            />
+            <CareerSelection
+              selectedInterest={selectedInterest}
+              handleInterestChange={handleInterestChange}
+            />
           </Grid>
-        )}
-        <Grid item xs={12}>
-          <TimeDate
-            selectedDates={selectedDates}
-            startTime={startTime}
-            endTime={endTime}
-            handleDatesChange={handleDatesChange}
-            handleStartTimeChange={handleStartTimeChange}
-            handleEndTimeChange={handleEndTimeChange}
-          />
+          {/* Right Side */}
+          <Grid item xs={12} md={6}>
+            <RelevantSkills
+              skills={skills}
+              handleSkillsChange={handleSkillsChange}
+            />
+            <Box textAlign="center">
+              <TimeDate
+                selectedDates={selectedDates}
+                startTime={startTime}
+                endTime={endTime}
+                handleDatesChange={handleDatesChange}
+                handleStartTimeChange={handleStartTimeChange}
+                handleEndTimeChange={handleEndTimeChange}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              fullWidth
+            >
+              Submit
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            fullWidth
-          >
-            Submit
-          </Button>
-        </Grid>
-      </Grid>
+      </Box>
     </Box>
   );
 }

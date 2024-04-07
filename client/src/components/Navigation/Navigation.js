@@ -1,4 +1,6 @@
-import * as React from 'react';
+// Navigation.js
+
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -23,7 +25,7 @@ const pages = [
 ];
 const settings = ['Logout'];
 
-function Navigation() {
+function Navigation({ handleMatchingButtonClick }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
