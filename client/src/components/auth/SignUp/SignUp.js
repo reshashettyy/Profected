@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {withFirebase} from '../../Firebase';
 import {doc, setDoc} from 'firebase/firestore';
+import callApiAddUser from './callApiAddUser';
 
 const SignUp = ({firebase}) => {
   const [firstName, setFirstName] = useState('');
@@ -37,8 +38,10 @@ const SignUp = ({firebase}) => {
       };
 
       await setDoc(doc(firebase.db, 'users', uid), userData);
+      const idToken = await firebase.doGetIdToken();
 
-      console.log('User data:', userData);
+      callApiAddUser(userData, idToken);
+
       navigate('/login');
     } catch (error) {
       console.error('Error signing in:', error);

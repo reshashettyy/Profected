@@ -1,6 +1,6 @@
-async function callApiAddStudentTraits(idToken, userData) {
+async function callApiAddProfessionalAvailaibility(idToken, userData) {
   try {
-    const response = await fetch('/api/addStudentTraits', {
+    const response = await fetch('/api/addProfessionalAvailability', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -18,4 +18,4 @@ async function callApiAddStudentTraits(idToken, userData) {
   }
 }
 
-export default callApiAddStudentTraits;
+export default callApiAddProfessionalAvailaibility;

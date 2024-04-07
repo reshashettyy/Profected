@@ -83,20 +83,19 @@ app.post("/api/getResources", (req, res) => {
   connection.end();
 });
 
-// API to add a user to the database
 app.post("/api/addUser", checkAuth, (req, res) => {
   const { userID, firstName, lastName, emailaddress, userType } = req.body;
 
   let connection = mysql.createConnection(config);
 
   const sql = `INSERT INTO Users (userID, firstName, lastName, emailaddress, userType) 
-				 VALUES (?, ?, ?, ?, ?)`;
+               VALUES (?, ?, ?, ?, ?)`;
 
   const data = [userID, firstName, lastName, emailaddress, userType];
 
   connection.query(sql, data, (error, results, fields) => {
     if (error) {
-      console.error("Error adding User Type:", error.message);
+      console.error("Error adding User:", error.message);
       return res
         .status(500)
         .json({ error: "Error adding user to the database" });
@@ -104,19 +103,33 @@ app.post("/api/addUser", checkAuth, (req, res) => {
 
     return res.status(200).json({ success: true });
   });
+
   connection.end();
 });
 
-app.post("/api/addStudentTraits", (req, res) => {
-  const { university, program, graduation_year, career_interest, skills } =
-    req.body;
+app.post("/api/addStudentTraits", checkAuth, (req, res) => {
+  const {
+    university,
+    program,
+    graduation_year,
+    career_interest,
+    skills,
+    userID,
+  } = req.body;
 
   let connection = mysql.createConnection(config);
 
-  const sql = `INSERT INTO StudentTraits (university, program, graduation_year, career_interest, skills) 
-               VALUES (?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO StudentTraits (university, program, graduation_year, career_interest, skills, userID) 
+               VALUES (?, ?, ?, ?, ?, ?)`;
 
-  const data = [university, program, graduation_year, career_interest, skills];
+  const data = [
+    university,
+    program,
+    graduation_year,
+    career_interest,
+    skills,
+    userID,
+  ];
 
   connection.query(sql, data, (error, results, fields) => {
     if (error) {
@@ -132,15 +145,15 @@ app.post("/api/addStudentTraits", (req, res) => {
   connection.end();
 });
 
-app.post("/api/addProfessionalTraits", (req, res) => {
-  const { university, program, company, job_title, skills } = req.body;
+app.post("/api/addProfessionalTraits", checkAuth, (req, res) => {
+  const { university, program, company, job_title, skills, userID } = req.body;
 
   let connection = mysql.createConnection(config);
 
-  const sql = `INSERT INTO ProfessionalTraits (university, program, company, job_title, skills) 
-               VALUES (?, ?, ?, ?, ?)`;
+  const sql = `INSERT INTO ProfessionalTraits (university, program, company, job_title, skills, userID) 
+               VALUES (?, ?, ?, ?, ?, ?)`;
 
-  const data = [university, program, company, job_title, skills];
+  const data = [university, program, company, job_title, skills, userID];
 
   connection.query(sql, data, (error, results, fields) => {
     if (error) {
@@ -148,6 +161,54 @@ app.post("/api/addProfessionalTraits", (req, res) => {
       return res
         .status(500)
         .json({ error: "Error adding professional traits to the database" });
+    }
+
+    return res.status(200).json({ success: true });
+  });
+
+  connection.end();
+});
+
+app.post("/api/addStudentAvailability", checkAuth, (req, res) => {
+  const { userID, dates, start_time, end_time } = req.body;
+
+  let connection = mysql.createConnection(config);
+
+  const sql = `INSERT INTO StudentAvailability (userID, dates, start_time, end_time) 
+               VALUES (?, ?, ?, ?)`;
+
+  const data = [userID, dates, start_time, end_time];
+
+  connection.query(sql, data, (error, results, fields) => {
+    if (error) {
+      console.error("Error adding Student Availability:", error.message);
+      return res
+        .status(500)
+        .json({ error: "Error adding student availability to the database" });
+    }
+
+    return res.status(200).json({ success: true });
+  });
+
+  connection.end();
+});
+
+app.post("/api/addProfessionalAvailability", checkAuth, (req, res) => {
+  const { userID, dates, start_time, end_time } = req.body;
+
+  let connection = mysql.createConnection(config);
+
+  const sql = `INSERT INTO ProfessionalAvailability (userID, dates, start_time, end_time) 
+               VALUES (?, ?, ?, ?)`;
+
+  const data = [userID, dates, start_time, end_time];
+
+  connection.query(sql, data, (error, results, fields) => {
+    if (error) {
+      console.error("Error adding Professional Availability:", error.message);
+      return res.status(500).json({
+        error: "Error adding professional availability to the database",
+      });
     }
 
     return res.status(200).json({ success: true });

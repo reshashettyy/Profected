@@ -14,6 +14,8 @@ import callApiAddStudentTraits from './callApiAddStudentTraits';
 import callApiAddProfessionalTraits from './callApiAddProfessionalTraits';
 import {doc, getDoc} from 'firebase/firestore';
 import {withFirebase} from '../Firebase';
+import callApiAddStudentAvailaibility from './callApiAddStudentAvailability';
+import callApiAddProfessionalAvailaibility from './callApiAddProfessionalAvailaibility';
 
 function Matching({firebase}) {
   const [selectedProgram, setSelectedProgram] = useState('');
@@ -58,18 +60,26 @@ function Matching({firebase}) {
   };
 
   const handleDatesChange = dates => {
-    setSelectedDates(dates);
+    const formattedDates = dates.map(date => {
+      const year = date.year;
+      const month = String(date.month).padStart(2, '0'); // Ensure month is two digits
+      const day = String(date.day).padStart(2, '0'); // Ensure day is two digits
+      return `${year}/${month}/${day}`;
+    });
+    setSelectedDates(formattedDates);
   };
 
   const handleStartTimeChange = time => {
-    setStartTime(time);
+    setStartTime(time.format('HH:mm'));
   };
 
   const handleEndTimeChange = time => {
-    setEndTime(time);
+    setEndTime(time.format('HH:mm'));
   };
 
   const handleSubmit = async () => {
+    const userId = firebase.getCurrentUserId();
+    const idToken = await firebase.doGetIdToken();
     if (userType === 'student') {
       const studentData = {
         university: selectedUniversity,
@@ -77,13 +87,18 @@ function Matching({firebase}) {
         graduation_year: selectedYear,
         career_interest: selectedInterest,
         skills: skills,
+        userID: userId,
       };
 
-      await callApiAddStudentTraits(studentData);
+      const studentAvailaibility = {
+        userID: userId,
+        dates: selectedDates.join(','),
+        start_time: startTime,
+        end_time: endTime,
+      };
 
-      console.log('Selected Dates:', selectedDates);
-      console.log('Start Time:', startTime);
-      console.log('End Time:', endTime);
+      await callApiAddStudentAvailaibility(idToken, studentAvailaibility);
+      await callApiAddStudentTraits(idToken, studentData);
     } else if (userType === 'professional') {
       const professionalData = {
         university: selectedUniversity,
@@ -91,17 +106,20 @@ function Matching({firebase}) {
         company: company,
         job_title: jobTitle,
         skills: skills,
+        userID: userId,
+      };
+      const professionalAvailaibility = {
+        userID: userId,
+        dates: selectedDates.join(','),
+        start_time: startTime,
+        end_time: endTime,
       };
 
-      await callApiAddProfessionalTraits(professionalData);
-      console.log('University:', selectedUniversity);
-      console.log('Program:', selectedProgram);
-      console.log('Company:', company);
-      console.log('Job Title:', jobTitle);
-      console.log('Skills:', skills);
-      console.log('Selected Dates:', selectedDates);
-      console.log('Start Time:', startTime);
-      console.log('End Time:', endTime);
+      await callApiAddProfessionalAvailaibility(
+        idToken,
+        professionalAvailaibility,
+      );
+      await callApiAddProfessionalTraits(idToken, professionalData);
     }
   };
 
