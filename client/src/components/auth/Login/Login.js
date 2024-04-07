@@ -7,7 +7,7 @@ const Login = ({firebase}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [currentPage, setCurrentPage] = useState('login');
+  const [showPopup, setShowPopup] = useState(false); // State for showing popup
   const navigate = useNavigate();
 
   const handleSubmit = e => {
@@ -16,12 +16,11 @@ const Login = ({firebase}) => {
     firebase
       .doSignInWithEmailAndPassword(email, password)
       .then(userCredential => {
-        console.log(userCredential);
         navigate('/');
       })
       .catch(error => {
         console.error('Login error:', error.message);
-        // Handle login error, e.g., display error message to the user
+        setShowPopup(true); // Show popup for login error
       });
   };
 
@@ -31,52 +30,57 @@ const Login = ({firebase}) => {
 
   return (
     <div className="login-container">
-      {currentPage === 'login' && (
-        <div className="login-box">
-          <h2>Login</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="email">Email:</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Password:</label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <input
-                type="checkbox"
-                id="rememberMe"
-                name="rememberMe"
-                checked={rememberMe}
-                onChange={e => setRememberMe(e.target.checked)}
-              />
-              <label htmlFor="rememberMe">Remember Me</label>
-            </div>
-            <button type="submit">Login</button>
-            <button
-              type="button"
-              onClick={handleSignUpClick}
-              style={{marginLeft: '10px'}}
-            >
-              Sign Up
-            </button>
-          </form>
-        </div>
-      )}
+      <div className="login-box">
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="checkbox"
+              id="rememberMe"
+              name="rememberMe"
+              checked={rememberMe}
+              onChange={e => setRememberMe(e.target.checked)}
+            />
+            <label htmlFor="rememberMe">Remember Me</label>
+          </div>
+          <button type="submit">Login</button>
+          <button
+            type="button"
+            onClick={handleSignUpClick}
+            style={{marginLeft: '10px'}}
+          >
+            Sign Up
+          </button>
+        </form>
+        {showPopup && (
+          <div className="popup">
+            <p>You don't have an account. Please sign up.</p>
+            <button onClick={() => setShowPopup(false)}>Close</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
+
 export default withFirebase(Login);

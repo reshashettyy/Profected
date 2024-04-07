@@ -1,12 +1,9 @@
 import React, {useState} from 'react';
-import callApiAddUser from './callApiAddUser';
 import {useNavigate} from 'react-router-dom';
 import {withFirebase} from '../../Firebase';
+import {doc, setDoc} from 'firebase/firestore';
 
 const SignUp = ({firebase}) => {
-  const [userID, setUserID] = useState('');
-  const [idToken, setIdToken] = useState('');
-
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -17,9 +14,7 @@ const SignUp = ({firebase}) => {
 
   const navigate = useNavigate();
 
-  const serverURL = '';
-
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -27,25 +22,27 @@ const SignUp = ({firebase}) => {
       return;
     }
 
-    firebase
-      .doCreateUserWithEmailAndPassword(email, password)
-      .then(authUser => {
-        const uid = authUser.user.uid;
-        const userData = {
-          userID: uid,
-          firstName: firstName,
-          lastName: lastName,
-          emailaddress: email,
-          userType: userType,
-        };
+    try {
+      const authUser = await firebase.doCreateUserWithEmailAndPassword(
+        email,
+        password,
+      );
+      const uid = authUser.user.uid;
+      const userData = {
+        userID: uid,
+        firstName: firstName,
+        lastName: lastName,
+        emailaddress: email,
+        userType: userType,
+      };
 
-        console.log('User data:', userData);
+      await setDoc(doc(firebase.db, 'users', uid), userData);
 
-        navigate('/login');
-      })
-      .catch(error => {
-        console.error('Error signing in:', error);
-      });
+      console.log('User data:', userData);
+      navigate('/login');
+    } catch (error) {
+      console.error('Error signing in:', error);
+    }
   };
 
   return (
