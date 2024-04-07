@@ -12,6 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Firebase from '../Firebase';
+import ProfectedLogo from './Profected_Logo.png';
 
 function Navigation({isAuthenticated}) {
   const authPages = ['Home', 'Matching', 'MainCalendar', 'Resources'];
@@ -123,9 +124,9 @@ function Navigation({isAuthenticated}) {
 
           {isAuthenticated && (
             <Box sx={{flexGrow: 0, marginLeft: 'auto'}}>
-              <Tooltip title="Logout?">
+              <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                  <Avatar alt="User Avatar" src="/static/images/avatar.jpg" />
+                  <Avatar alt="Logo" src={ProfectedLogo} />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -144,6 +145,17 @@ function Navigation({isAuthenticated}) {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
+                <MenuItem
+                  onClick={handleCloseUserMenu}
+                  component={Link}
+                  to="/profile"
+                  sx={{
+                    color: 'inherit',
+                    textDecoration: 'none',
+                  }}
+                >
+                  Profile
+                </MenuItem>
                 <MenuItem
                   onClick={handleLogout}
                   sx={{

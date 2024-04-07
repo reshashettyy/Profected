@@ -7,6 +7,7 @@ import MainCalendar from '../Calendar/Calendar';
 import Resources from '../Resources';
 import SignUp from '../auth/SignUp/SignUp';
 import Login from '../auth/Login/Login';
+import Profile from '../Profile/Profile';
 
 const PrivateRoute = ({authUser}) => {
   const isAuthenticated = !!authUser;
@@ -32,6 +33,10 @@ const PrivateRoute = ({authUser}) => {
         <Route
           path="/login"
           element={authUser ? <Navigate to="/" /> : <Login />}
+        />
+        <Route
+          path="/profile"
+          element={authUser ? <Profile /> : <Navigate to="/login" />}
         />
       </Routes>
     </React.Fragment>

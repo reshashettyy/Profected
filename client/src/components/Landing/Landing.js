@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import {FirebaseContext} from '../Firebase';
-
+import {doc, getDoc} from 'firebase/firestore';
 import {
   Button,
   Typography,
@@ -83,29 +83,27 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Landing = () => {
-  const [userID, setUserID] = useState('');
-  const [idToken, setIdToken] = useState('');
+  const [firstName, setFirstName] = useState('');
 
-  const firebase = React.useContext(FirebaseContext);
+  const firebase = useContext(FirebaseContext);
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const user = firebase.auth.currentUser;
-        if (user) {
-          const token = await user.getIdToken();
-          setIdToken(token);
-          console.log('ID Token:', token);
-          setUserID(user.uid);
-          console.log('User ID:', user.uid);
+    const fetchFirstName = async () => {
+      const user = firebase.auth.currentUser;
+      if (user) {
+        const userRef = doc(firebase.db, 'users', user.uid);
+        const userDoc = await getDoc(userRef);
+        if (userDoc.exists()) {
+          setFirstName(userDoc.data().firstName);
         }
-      } catch (error) {
-        console.error('Error fetching user details:', error);
       }
     };
-    fetchUserDetails();
+
+    fetchFirstName();
   }, [firebase]);
+
   const classes = useStyles();
+
   const [selectedProfile, setSelectedProfile] = useState(null);
 
   const handleProfileClick = profile => {
@@ -202,7 +200,7 @@ const Landing = () => {
             color="textPrimary"
             gutterBottom
           >
-            Welcome to Our Networking Platform
+            Welcome to Profected{firstName ? `, ${firstName}` : ''}!
           </Typography>
           <Typography
             variant="h5"
