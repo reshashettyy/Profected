@@ -6,6 +6,7 @@ function JobTitle({jobTitle, handleJobTitleChange}) {
     <div>
       <h3>Enter your recent Job Titles: </h3>
       <TextField
+        required
         label="Enter your recent Job Titles (separated by comma)"
         variant="outlined"
         fullWidth

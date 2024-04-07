@@ -14,6 +14,8 @@ import callApiAddStudentTraits from './callApiAddStudentTraits';
 import callApiAddProfessionalTraits from './callApiAddProfessionalTraits';
 import {doc, getDoc} from 'firebase/firestore';
 import {withFirebase} from '../Firebase';
+import callApiAddStudentAvailaibility from './callApiAddStudentAvailability';
+import callApiAddProfessionalAvailaibility from './callApiAddProfessionalAvailaibility';
 
 function Matching({firebase}) {
   const [selectedProgram, setSelectedProgram] = useState('');
@@ -58,50 +60,115 @@ function Matching({firebase}) {
   };
 
   const handleDatesChange = dates => {
-    setSelectedDates(dates);
+    const formattedDates = dates.map(date => {
+      const year = date.year;
+      const month = String(date.month).padStart(2, '0'); // Ensure month is two digits
+      const day = String(date.day).padStart(2, '0'); // Ensure day is two digits
+      return `${year}/${month}/${day}`;
+    });
+    setSelectedDates(formattedDates);
   };
 
   const handleStartTimeChange = time => {
-    setStartTime(time);
+    setStartTime(time.format('HH:mm'));
   };
 
   const handleEndTimeChange = time => {
-    setEndTime(time);
+    setEndTime(time.format('HH:mm'));
+  };
+
+  const resetStates = () => {
+    setSelectedProgram('');
+    setSelectedUniversity('');
+    setSelectedInterest('');
+    setSelectedYear('');
+    setSkills('');
+    setJobTitle('');
+    setCompany('');
+    setSelectedDates([]);
+    setStartTime('');
+    setEndTime('');
+  };
+
+  const checkUserSubmission = async userID => {
+    try {
+      const response = await fetch('/api/checkUserSubmission', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: await firebase.doGetIdToken(),
+        },
+        body: JSON.stringify({userID}),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      return result.exists;
+    } catch (error) {
+      console.error('Error checking user submission:', error);
+      throw error;
+    }
   };
 
   const handleSubmit = async () => {
-    if (userType === 'student') {
-      const studentData = {
-        university: selectedUniversity,
-        program: selectedProgram,
-        graduation_year: selectedYear,
-        career_interest: selectedInterest,
-        skills: skills,
-      };
+    const userId = firebase.getCurrentUserId();
 
-      await callApiAddStudentTraits(studentData);
+    const hasSubmitted = await checkUserSubmission(userId);
+    if (hasSubmitted) {
+      alert('You have already submitted the form.');
+      return;
+    }
 
-      console.log('Selected Dates:', selectedDates);
-      console.log('Start Time:', startTime);
-      console.log('End Time:', endTime);
-    } else if (userType === 'professional') {
-      const professionalData = {
-        university: selectedUniversity,
-        program: selectedProgram,
-        company: company,
-        job_title: jobTitle,
-        skills: skills,
-      };
+    const idToken = await firebase.doGetIdToken();
 
-      await callApiAddProfessionalTraits(professionalData);
-      console.log('University:', selectedUniversity);
-      console.log('Program:', selectedProgram);
-      console.log('Company:', company);
-      console.log('Job Title:', jobTitle);
-      console.log('Skills:', skills);
-      console.log('Selected Dates:', selectedDates);
-      console.log('Start Time:', startTime);
-      console.log('End Time:', endTime);
+    try {
+      if (userType === 'student') {
+        const studentData = {
+          university: selectedUniversity,
+          program: selectedProgram,
+          graduation_year: selectedYear,
+          career_interest: selectedInterest,
+          skills: skills,
+          userID: userId,
+        };
+
+        const studentAvailaibility = {
+          userID: userId,
+          dates: selectedDates.join(','),
+          start_time: startTime,
+          end_time: endTime,
+        };
+
+        await callApiAddStudentAvailaibility(idToken, studentAvailaibility);
+        await callApiAddStudentTraits(idToken, studentData);
+      } else if (userType === 'professional') {
+        const professionalData = {
+          university: selectedUniversity,
+          program: selectedProgram,
+          company: company,
+          job_title: jobTitle,
+          skills: skills,
+          userID: userId,
+        };
+        const professionalAvailaibility = {
+          userID: userId,
+          dates: selectedDates.join(','),
+          start_time: startTime,
+          end_time: endTime,
+        };
+
+        await callApiAddProfessionalAvailaibility(
+          idToken,
+          professionalAvailaibility,
+        );
+        await callApiAddProfessionalTraits(idToken, professionalData);
+      }
+      resetStates();
+    } catch (error) {
+      console.error('Error submitting form:', error);
     }
   };
 

@@ -30,7 +30,7 @@ function ProgramSelection({selectedProgram, handleProgramChange}) {
   return (
     <div>
       <h3>Select your program of study:</h3>
-      <FormControl fullWidth>
+      <FormControl fullWidth required>
         <InputLabel id="program-select-label">Select your Program:</InputLabel>
         <Select
           value={selectedProgram ? selectedProgram : ''}
