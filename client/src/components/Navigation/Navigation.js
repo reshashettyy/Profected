@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Firebase from '../Firebase';
 import ProfectedLogo from './Profected_Logo.png';
 
-function Navigation({ isAuthenticated }) {
+function Navigation({isAuthenticated}) {
   const authPages = ['Home', 'Matching', 'MainCalendar', 'Resources'];
   const guestPages = ['Home', 'Login'];
   const pages = isAuthenticated ? authPages : guestPages;
@@ -22,10 +22,10 @@ function Navigation({ isAuthenticated }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const handleOpenNavMenu = (event) => {
+  const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
+  const handleOpenUserMenu = event => {
     setAnchorElUser(event.currentTarget);
   };
 
@@ -44,17 +44,21 @@ function Navigation({ isAuthenticated }) {
       .doSignOut()
       .then(() => {
         console.log('Logged out successfully');
+        handleCloseNavMenu();
+        window.location.href = '/auth';
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error occurred during logout:', error);
       });
   };
 
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: 'primary.main' }}> {/* Set the AppBar background color */}
+    <AppBar position="fixed" sx={{backgroundColor: 'primary.main'}}>
+      {' '}
+      {/* Set the AppBar background color */}
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -80,10 +84,10 @@ function Navigation({ isAuthenticated }) {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: {xs: 'block', md: 'none'},
               }}
             >
-              {pages.map((page) => (
+              {pages.map(page => (
                 <MenuItem
                   key={page}
                   onClick={handleCloseNavMenu}
@@ -100,12 +104,18 @@ function Navigation({ isAuthenticated }) {
             </Menu>
           </Box>
 
-          <Box sx={{ flexGrow: 0.5, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+          <Box sx={{flexGrow: 0.5, display: {xs: 'none', md: 'flex'}}}>
+            {pages.map(page => (
               <Button
                 key={page}
                 component={Link}
-                to={page === 'Home' ? '/' : page === 'Login' ? '/auth' : `/${page.toLowerCase()}`}
+                to={
+                  page === 'Home'
+                    ? '/'
+                    : page === 'Login'
+                    ? '/auth'
+                    : `/${page.toLowerCase()}`
+                }
                 onClick={handleCloseNavMenu}
                 sx={{
                   color: 'black',
@@ -123,14 +133,14 @@ function Navigation({ isAuthenticated }) {
           </Box>
 
           {isAuthenticated && (
-            <Box sx={{ flexGrow: 0, marginLeft: 'auto' }}>
+            <Box sx={{flexGrow: 0, marginLeft: 'auto'}}>
               <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
                   <Avatar alt="Logo" src={ProfectedLogo} />
                 </IconButton>
               </Tooltip>
               <Menu
-                sx={{ mt: '45px' }}
+                sx={{mt: '45px'}}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
@@ -165,7 +175,7 @@ function Navigation({ isAuthenticated }) {
                 >
                   Logout
                 </MenuItem>
-              </Menu> 
+              </Menu>
             </Box>
           )}
         </Toolbar>

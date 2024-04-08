@@ -19,11 +19,7 @@ import {
   DialogContentText,
 } from '@material-ui/core';
 
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingTop: '100cm', // Add padding to the top of the root element
-  },
+const useStyles = makeStyles(theme => ({
   heroContent: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(8, 3, 5),
@@ -32,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: '0rem', // Added margin top to move it down
   },
   profilesContainer: {
     display: 'grid',
