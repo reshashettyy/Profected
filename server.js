@@ -5,7 +5,6 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
-import response from "express";
 import admin from "firebase-admin";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -290,7 +289,6 @@ app.post("/api/updateUserDetails", checkAuth, (req, res) => {
 
   let connection = mysql.createConnection(config);
 
-  // Update the user details based on the userType
   let sql;
   let data;
   console.log(req.body.userType);
@@ -328,6 +326,98 @@ app.post("/api/updateUserDetails", checkAuth, (req, res) => {
   });
 
   connection.end();
+});
+
+app.post("/api/getMatched", checkAuth, async (req, res) => {
+  console.log("Request body:", req.body);
+
+  const { userID } = req.body;
+
+  console.log("userID:", userID);
+
+  let connection = mysql.createConnection(config);
+  let sql = "SELECT * FROM StudentTraits WHERE userID = ?";
+
+  connection.query(sql, [userID], async (error, results) => {
+    if (error) {
+      console.error("Error fetching user profile:", error.message);
+      connection.end();
+      return res.status(500).json({ error: "Error fetching user profile" });
+    }
+
+    console.log("User profile:", results);
+
+    if (results.length === 0) {
+      connection.end();
+      return res.status(404).json({ error: "User profile not found" });
+    }
+
+    const userProfile = {
+      university: results[0].university,
+      program: results[0].program,
+      career_interest: results[0].career_interest,
+      skills: results[0].skills,
+    };
+
+    // Log the userProfile to see if it's being constructed correctly
+    console.log("Constructed userProfile:", userProfile);
+
+    try {
+      const pythonServiceResponse = await fetch("http://127.0.0.1:8000/match", {
+        method: "POST",
+        body: JSON.stringify(userProfile),
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!pythonServiceResponse.ok) {
+        throw new Error(
+          `Python service returned status: ${pythonServiceResponse.status}`
+        );
+      }
+
+      const matchedProfessional = await pythonServiceResponse.json();
+      connection.end();
+      res.status(200).json(matchedProfessional);
+    } catch (pythonServiceError) {
+      console.error(
+        "Error during matching process:",
+        pythonServiceError.message
+      );
+      connection.end();
+      res.status(500).json({ error: "Error during matching process" });
+    }
+  });
+});
+
+app.post("/api/getProfessionalInfo", checkAuth, (req, res) => {
+  const { professionalId } = req.body;
+
+  let connection = mysql.createConnection(config);
+
+  const sql = `
+    SELECT u.firstName, u.lastName, p.university, p.program, p.company, p.job_title, p.skills
+    FROM Users u
+    JOIN ProfessionalTraits p ON u.userID = p.userID
+    WHERE u.userID = ?
+  `;
+
+  connection.query(sql, [professionalId], (error, results) => {
+    if (error) {
+      console.error("Error fetching professional info:", error.message);
+      connection.end();
+      return res
+        .status(500)
+        .json({ error: "Error fetching professional info" });
+    }
+
+    if (results.length === 0) {
+      connection.end();
+      return res.status(404).json({ error: "Professional not found" });
+    }
+
+    connection.end();
+    res.status(200).json(results[0]);
+  });
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
