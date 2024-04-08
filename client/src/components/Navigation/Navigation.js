@@ -44,6 +44,8 @@ function Navigation({isAuthenticated}) {
       .doSignOut()
       .then(() => {
         console.log('Logged out successfully');
+        handleCloseNavMenu();
+        window.location.href = '/auth';
       })
       .catch(error => {
         console.error('Error occurred during logout:', error);

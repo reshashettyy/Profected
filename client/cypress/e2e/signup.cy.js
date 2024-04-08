@@ -1,10 +1,3 @@
-Cypress.on('uncaught:exception', (err, runnable) => {
-  // returning false here prevents Cypress from failing the test
-  if (err.message.includes('auth/internal-error')) {
-    return false;
-  }
-});
-
 describe('Sign up slide test', () => {
   beforeEach(() => {
     // Mock Firebase Auth calls
