@@ -25,7 +25,7 @@ README updated March 15 2024
 - Users can create a new account by providing their first name, last name, email, password, and confirming their password.
 - Includes a dropdown to select the user type (student or professional).
 - Passwords are checked for a match before the account is created.
-- Upon successful account creation, the user data is stored in Firebase Firestore, and the user is redirected to the homepage ('/').
+- Upon successful account creation, the user data is stored in Firebase Firestore, and the user is redirected to the homepage.
 - Error handling for sign-up failures, displaying an error message in the console.
 - Uses Firebase Authentication for handling user authentication.
 - Utilizes Firebase Firestore for storing user data upon account creation.
@@ -55,11 +55,15 @@ README updated March 15 2024
 
 ### Resources
 
+- Displays a list of resources (e.g., conferences) in a scrollable area, each represented by a card. Each card shows the conference name, location, and date/time.
 - Hard coded all the data for local tech conferences
+- When user hovers over the conference details, the marker bounces to attract users attention to the map
 - Rendered each one on a component card
+- Includes a search input to filter resources by name and location.
+- Users can toggle between viewing all resources and only saved resources.
+- Users can save resources by clicking a bookmark icon on each resource card.
 - Added Google Maps frame
 - Added markers that correlate to each of the card
-- When user hovers over the conference details, the marker bounces to attract users attention to the map
 
 ### VideoEmbedding
 
@@ -67,6 +71,16 @@ README updated March 15 2024
 - In order to test multiple people on call, the user should open up a private/incognito window with the localhost and they can join in with another username.
 
 [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-7f7980b617ed060a017424585567c406b6ee15c891e84e1186181d67ecf80aa0.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=13352842)
+
+### User Profile
+- Retrieves the user's profile information from the server using a fetch request with the user's ID token for authentication.
+- The profile information includes both user and details data, which are stored in the userProfile state.
+- Users can edit their profile details by clicking the "Edit Details" button, which switches the view to editable text fields.
+- Users can save their changes by clicking the "Save" button, which sends a POST request to the server with the updated details.
+- If the update is successful, the profile information is refreshed to reflect the changes.
+- A "Cancel" button is provided to discard changes and exit editing mode.
+- Conditional Rendering is used to find differences between "professional" and "student" user types, displaying relevant details for each.
+- Uses Material-UI components and styling for a consistent and modern user interface
 
 # MSci 342 - Project template
 
