@@ -18,16 +18,19 @@ README updated March 15 2024
 - Click on a profile to view details and book time. Includes bio and reasons to book time, and allows direct booking.
 
 ## Login
-- The user is brought to the login box where they will need to enter their own user name and password to login
-- If users do not have an account, they can click on the "Sign Up" button, to create an account
-- To create an account, the user will need to complete the fields (error handling is working for the sign up page)
-- The user can sign up and then registerd using Firebase Authentication
-- Firebase authentication is setup with email and password providers
-- User can only login if the user has signed up on the portal before (authentication)
-
-- To test the login page, signup with your own credentials and then login with them and it should automatically redirect you to the landing page again
-
-- We will work on adding custom attributes like userType (Student or Professional) into a firestore database
+- The page serves as both a login and a sign-up page, with the ability to switch between the two modes using a sliding overlay.
+- Users can log in using their email and password.
+- Upon successful login, the user is redirected to the homepage.
+- Error handling for login failures, displaying an error message in the console.
+- Users can create a new account by providing their first name, last name, email, password, and confirming their password.
+- Includes a dropdown to select the user type (student or professional).
+- Passwords are checked for a match before the account is created.
+- Upon successful account creation, the user data is stored in Firebase Firestore, and the user is redirected to the homepage ('/').
+- Error handling for sign-up failures, displaying an error message in the console.
+- Uses Firebase Authentication for handling user authentication.
+- Utilizes Firebase Firestore for storing user data upon account creation.
+- The page features a modern design with a sliding overlay to switch between login and sign-up modes.
+- Responsive design ensures that the page looks good on different screen sizes.
 
 ### Matching
 
