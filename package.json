@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "concurrently": "^8.0.1",
-    "cypress": "^13.7.0"
+    "cypress": "^13.7.0",
+    "identity-obj-proxy": "^3.0.0"
   }
 }

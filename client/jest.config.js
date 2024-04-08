@@ -11,4 +11,7 @@ module.exports = {
     '<rootDir>/node_modules',
     '<rootDir>/src', // add this if your @mui/styles module is within the src directory
   ],
+  moduleNameMapper: {
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+  },
 };
