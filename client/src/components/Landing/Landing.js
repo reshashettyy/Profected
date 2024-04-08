@@ -2,6 +2,8 @@ import React, {useState, useEffect, useContext} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import {FirebaseContext} from '../Firebase';
 import {doc, getDoc} from 'firebase/firestore';
+import {Link} from 'react-router-dom';
+
 import {
   Button,
   Typography,
@@ -217,17 +219,21 @@ const Landing = () => {
               marginBottom: '2rem',
             }}
           >
-            <Button variant="contained" color="primary" href="matching">
-              Get Matched
-            </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              href="resources"
-              style={{marginLeft: '1rem'}}
-            >
-              Explore Resources
-            </Button>
+            <Link to="/matching">
+              <Button variant="contained" color="primary">
+                Get Matched
+              </Button>
+            </Link>
+
+            <Link to="/resources">
+              <Button
+                variant="outlined"
+                color="primary"
+                style={{marginLeft: '1rem'}}
+              >
+                Explore Resources
+              </Button>
+            </Link>
           </div>
         </div>
       </Container>
