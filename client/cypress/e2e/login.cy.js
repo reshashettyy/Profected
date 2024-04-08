@@ -7,8 +7,8 @@ describe('Login', () => {
       // You need to replace these values with actual authenticated credentials
       // retrieved from Firebase authentication
       user1: {
-        email: 'testuser@gmail.com',
-        password: 'test123',
+        email: 'gavneetbhandal@gmail.com',
+        password: 'gavneetbhandal',
       },
 
       // Add more combinations as needed
