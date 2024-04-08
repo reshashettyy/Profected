@@ -40,10 +40,10 @@ README updated March 15 2024
 - Student can select their career interests
 - Student can enter the list of dates that will work for them for meetings
 - Student can enter a range of time that works for them to meet during the dates they have selected
-- Professional is capable of selecting Company, JobTitle, University, and dates
+- Professional is capable of selecting Company, JobTitle, University, Skills and dates
 - Clicking the submit button will store the values into the MySQL Database under the "StudentTraits" and "ProfessionalTraits" tables
-
-- Next Sprint we will work on the Matching algorithm and adding the dates the student and professionals are available
+- The Matching Algorithm uses K-Nearest-Neighbours to find the professional that is closest in distance to the Student when they click the GetMatched button
+- A User can only submit the form once and once they do, all the information is stored in the database and the informaiton about the professional they are matched with is displayed on the screen. 
 
 ### MainCalendar
 
