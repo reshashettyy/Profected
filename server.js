@@ -5,7 +5,6 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import bodyParser from "body-parser";
-import response from "express";
 import admin from "firebase-admin";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -290,7 +289,6 @@ app.post("/api/updateUserDetails", checkAuth, (req, res) => {
 
   let connection = mysql.createConnection(config);
 
-  // Update the user details based on the userType
   let sql;
   let data;
   console.log(req.body.userType);
@@ -328,19 +326,15 @@ app.post("/api/updateUserDetails", checkAuth, (req, res) => {
   });
 
   connection.end();
-  
- });
+});
 
 app.post("/api/getMatched", checkAuth, async (req, res) => {
-  // Log the request body to see if userID is being sent correctly
   console.log("Request body:", req.body);
 
-  const { userID } = req.body; // Get userID from the request body
+  const { userID } = req.body;
 
-  // Log the userID to see if it's being extracted correctly
   console.log("userID:", userID);
 
-  // Retrieve the user's profile information from your database
   let connection = mysql.createConnection(config);
   let sql = "SELECT * FROM StudentTraits WHERE userID = ?";
 
@@ -351,7 +345,6 @@ app.post("/api/getMatched", checkAuth, async (req, res) => {
       return res.status(500).json({ error: "Error fetching user profile" });
     }
 
-    // Log the results to see if the userProfile has the correct values
     console.log("User profile:", results);
 
     if (results.length === 0) {
@@ -425,5 +418,6 @@ app.post("/api/getProfessionalInfo", checkAuth, (req, res) => {
     connection.end();
     res.status(200).json(results[0]);
   });
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
