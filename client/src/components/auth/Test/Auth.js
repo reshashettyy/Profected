@@ -12,6 +12,7 @@ const Auth = ({firebase}) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
+  const [userType, setUserType] = useState(''); // Added state for user type
 
   const navigate = useNavigate();
 
@@ -42,6 +43,7 @@ const Auth = ({firebase}) => {
         firstName: firstName,
         lastName: lastName,
         emailaddress: email,
+        userType: userType, // Include user type in user data
       };
       await setDoc(doc(firebase.db, 'users', uid), userData);
       const idToken = await firebase.doGetIdToken();
@@ -61,7 +63,6 @@ const Auth = ({firebase}) => {
         <div className="form-container sign-up-container">
           <form onSubmit={handleSignUpSubmit}>
             <h1>Create Account</h1>
-            <span>or use your email for registration</span>
             <input
               type="text"
               placeholder="First Name"
@@ -76,6 +77,15 @@ const Auth = ({firebase}) => {
               onChange={e => setLastName(e.target.value)}
               required
             />
+            <select
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
+              required
+            >
+              <option value="">Select User Type</option>
+              <option value="student">Student</option>
+              <option value="professional">Professional</option>
+            </select>
             <input
               type="email"
               placeholder="Email"
