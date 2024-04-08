@@ -218,3 +218,13 @@ input {
     height: 40px;
     width: 40px;
 }
+
+select {
+    background-color: #eee;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    font-size: 12px; /* Match the font size of other input fields */
+    color: #333; /* Match the color of other input placeholders */
+}
