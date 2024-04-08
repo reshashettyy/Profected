@@ -20,6 +20,43 @@ const Profile = () => {
     }
   }, [firebase]);
 
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  const checkUserSubmission = async userID => {
+    try {
+      const response = await fetch('/api/checkUserSubmission', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: await firebase.doGetIdToken(),
+        },
+        body: JSON.stringify({userID}),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      return result.exists;
+    } catch (error) {
+      console.error('Error checking user submission:', error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    const checkSubmission = async () => {
+      const user = firebase.auth.currentUser;
+      if (user) {
+        const submitted = await checkUserSubmission(user.uid);
+        setHasSubmitted(submitted);
+      }
+    };
+
+    checkSubmission();
+  }, [firebase]);
+
   useEffect(() => {
     fetchUserProfile();
   }, [fetchUserProfile]);
@@ -118,7 +155,8 @@ const Profile = () => {
             Email: {userProfile.user.emailaddress}
           </Typography>
 
-          {(userProfile.user.userType === 'professional' ||
+          {hasSubmitted &&
+          (userProfile.user.userType === 'professional' ||
             userProfile.user.userType === 'student') &&
           !isEditing ? (
             <>
