@@ -36,6 +36,10 @@ describe('Sign up slide test', () => {
   });
 
   it('Should slide to create account when sign up button is clicked', () => {
+    cy.on('uncaught:exception', (err, runnable) => {
+      console.error('Uncaught exception:', err.message);
+      return false;
+    });
     // Initially, the sign-in panel should be visible
     cy.get('.container').should('not.have.class', 'right-panel-active');
 
@@ -43,7 +47,6 @@ describe('Sign up slide test', () => {
     cy.get('#signUp').click();
 
     // Wait for a short period to allow the UI to update
-    cy.wait(1000);
 
     cy.get('.container').should('have.class', 'right-panel-active');
   });

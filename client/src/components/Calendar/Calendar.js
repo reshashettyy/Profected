@@ -98,6 +98,7 @@ function MainCalendar() {
           marginLeft: '150px',
           marginRight: '150px',
           marginBottom: '150px',
+          marginTop: '100px',
         }}
       />
     </div>

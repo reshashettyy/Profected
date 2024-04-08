@@ -17,6 +17,7 @@
     "@mui/material": "^5.15.15",
     "@mui/styles": "^5.15.13",
     "@mui/x-date-pickers": "^7.1.1",
+    "cypress-firebase": "^4.0.0",
     "data-fns": "^1.1.0",
     "dayjs": "^1.11.10",
     "dotenv": "^16.0.3",
