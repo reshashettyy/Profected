@@ -1,17 +1,17 @@
 # Dhruv
 
-- Yesterday, I finished off global state management for the userType in order to help with conditional rendering
+- Yesterday, I spent the day researching about the python script + flask
 - N/A
-- Today I will work on trying to implement the ML Algorithm that will be used to match the student and professional
+- Today I will work on trying to implement the ML Algorithm
 
 # Gavneet
 
-- Yesterday I worked on doing research about saving certain resources by users into a saved page or component
+- Yesterday, I worked on building the save component for the resources page
 - N/A
-- Today, I will continue to work on the saving component for the resources page
+- Today, I will complete building the save component
 
 # Resha
 
-- Yesterday I worked on changing the theme of the webpage and fixed errors I was facing
+- Yesterday I worked on building the animation for the sign in/sign up page
 - N/A
-- Today, I will continue working on debugging the errors I was facing
+- Today, I will continue working on the animiation for the sign in/sign up page
