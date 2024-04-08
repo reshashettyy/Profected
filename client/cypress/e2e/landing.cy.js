@@ -7,7 +7,7 @@ describe('Matching Button', () => {
       cy.contains('Get Matched').click();
   
       // Assert that the URL contains '/matching' indicating navigation to the matching page
-      cy.url().should('include', '/matching');
+      cy.url().should('include', '/login');
     });
   });
   

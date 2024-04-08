@@ -76,7 +76,7 @@ const Profile = () => {
       skills: userProfile.details.skills,
     });
   };
-  
+
   const handleCancelEdit = () => {
     setIsEditing(false);
     // Reset editedDetails to the original userProfile details
@@ -92,13 +92,22 @@ const Profile = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" gutterBottom>
+    <Container
+      maxWidth="sm"
+      style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}
+    >
+      <Typography
+        variant="h4"
+        style={{margin: '100px', fontWeight: 700}}
+        gutterBottom
+      >
         User Profile
       </Typography>
       {userProfile && (
         <>
-          <Typography variant="h6">Personal Information:</Typography>
+          <Typography variant="h6" style={{fontWeight: 700}}>
+            Personal Information:
+          </Typography>
           <Typography variant="body1">
             First Name: {userProfile.user.firstName}
           </Typography>
@@ -113,7 +122,10 @@ const Profile = () => {
             userProfile.user.userType === 'student') &&
           !isEditing ? (
             <>
-              <Typography variant="h6">
+              <Typography
+                variant="h6"
+                style={{fontWeight: 700, marginTop: '25px'}}
+              >
                 {userProfile.user.userType === 'professional'
                   ? 'Professional Details:'
                   : 'Student Details:'}
@@ -148,6 +160,7 @@ const Profile = () => {
                 </>
               )}
               <Button
+                style={{marginTop: '30px'}}
                 onClick={handleEditClick}
                 variant="contained"
                 color="primary"
@@ -239,10 +252,15 @@ const Profile = () => {
                 onClick={handleSaveDetails}
                 variant="contained"
                 color="primary"
+                style={{marginTop: '10px'}}
               >
                 Save
               </Button>
-              <Button onClick={handleCancelEdit} variant="contained">
+              <Button
+                onClick={handleCancelEdit}
+                variant="contained"
+                style={{marginTop: '10px'}}
+              >
                 Cancel
               </Button>
             </>
