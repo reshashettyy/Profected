@@ -93,32 +93,14 @@ function MainCalendar() {
         startAccessor="start"
         endAccessor="end"
         titleAccessor="event_name"
-        style={{height: 700, marginLeft: '150px', marginRight: '150px'}}
+        style={{
+          height: 700,
+          marginLeft: '150px',
+          marginRight: '150px',
+          marginBottom: '150px',
+          marginTop: '100px',
+        }}
       />
-      <h2>Add New Event</h2>
-      <div>
-        <input
-          type="text"
-          placeholder="Add Title"
-          style={{width: '20%', marginRight: '10px'}}
-          value={newEvent.title}
-          onChange={e => setNewEvent({...newEvent, title: e.target.value})}
-        />
-        <DatePicker
-          placeholderText="Start Date"
-          style={{marginRight: '10px'}}
-          selected={newEvent.start}
-          onChange={start => setNewEvent({...newEvent, start})}
-        />
-        <DatePicker
-          placeholderText="End Date"
-          selected={newEvent.end}
-          onChange={end => setNewEvent({...newEvent, end})}
-        />
-        <button stlye={{marginTop: '10px'}} onClick={handleAddEvent}>
-          Add Event
-        </button>
-      </div>
     </div>
   );
 }

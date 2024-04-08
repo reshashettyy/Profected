@@ -6,6 +6,7 @@ function Company({company, handleCompanyChange}) {
     <div>
       <h3>Enter your current Company: </h3>
       <TextField
+        required
         label="Enter your current Company"
         variant="outlined"
         fullWidth

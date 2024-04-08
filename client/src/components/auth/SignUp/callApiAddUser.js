@@ -1,9 +1,10 @@
-async function callApiAddUser(serverURL, userData) {
+async function callApiAddUser(userData, idToken) {
   try {
     const response = await fetch('/api/addUser', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: idToken,
       },
       body: JSON.stringify(userData),
     });
