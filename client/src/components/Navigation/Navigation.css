@@ -1,0 +1,94 @@
+/* Navigation.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+.AppBar {
+  width: 100%;
+  padding: 12px 0;
+  background: #e0f2f1;
+  box-shadow: -3px -3px 7px #ffffff, 3px 3px 5px #ceced1, inset -3px -3px 7px #ffffff, inset 3px 3px 5px #ceced1;
+}
+
+.Toolbar {
+  max-width: 1270px;
+  margin: auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Logo {
+  font-size: 28px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #31344b;
+}
+
+.NavLink {
+  margin: 0 8px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #31344b;
+  font-weight: 400;
+  display: inline-flex;
+  padding: 10px 12px;
+  box-shadow: -3px -3px 7px #ffffff, 3px 3px 5px #ceced1;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.NavLink:hover {
+  color: #3498db;
+}
+
+.NavLink:hover:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: inset -3px -3px 7px #ffffff, inset 3px 3px 5px #ceced1;
+}
+
+@media (max-width: 940px) {
+  .Menu {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    max-width: 400px;
+    padding-top: 45px;
+    height: 100%;
+    background: #e0f2f1;
+    box-shadow: 0 5px 10px #b0b0b5;
+    z-index: 12;
+    transition: all 0.3s ease;
+  }
+
+  .Menu a {
+    display: block;
+    font-size: 23px;
+    width: 100%;
+    margin-top: 30px;
+    box-shadow: none;
+    text-align: center;
+  }
+
+  .Menu a:hover:before {
+    box-shadow: none;
+  }
+
+  .Bars {
+    display: block;
+  }
+
+  #check:checked ~ label.Bars {
+    display: none;
+  }
+
+  #check:checked ~ .Menu {
+    left: 0;
+  }
+}
