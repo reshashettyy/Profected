@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { withFirebase } from '../../Firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {withFirebase} from '../../Firebase';
+import {doc, setDoc} from 'firebase/firestore';
 import callApiAddUser from '../SignUp/callApiAddUser';
 import '../Styles/auth.css'; // Import the CSS file
 
-const Auth = ({ firebase }) => {
+const Auth = ({firebase}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -15,7 +15,7 @@ const Auth = ({ firebase }) => {
 
   const navigate = useNavigate();
 
-  const handleLoginSubmit = async (e) => {
+  const handleLoginSubmit = async e => {
     e.preventDefault();
     try {
       await firebase.doSignInWithEmailAndPassword(email, password);
@@ -25,14 +25,17 @@ const Auth = ({ firebase }) => {
     }
   };
 
-  const handleSignUpSubmit = async (e) => {
+  const handleSignUpSubmit = async e => {
     e.preventDefault();
     if (password !== confirmPassword) {
       console.error('Passwords do not match');
       return;
     }
     try {
-      const authUser = await firebase.doCreateUserWithEmailAndPassword(email, password);
+      const authUser = await firebase.doCreateUserWithEmailAndPassword(
+        email,
+        password,
+      );
       const uid = authUser.user.uid;
       const userData = {
         userID: uid,
@@ -50,7 +53,10 @@ const Auth = ({ firebase }) => {
   };
 
   return (
-    <div className={`container ${isSignUp ? 'right-panel-active' : ''}`} id="container">
+    <div
+      className={`container ${isSignUp ? 'right-panel-active' : ''}`}
+      id="container"
+    >
       {isSignUp ? (
         <div className="form-container sign-up-container">
           <form onSubmit={handleSignUpSubmit}>
@@ -60,35 +66,35 @@ const Auth = ({ firebase }) => {
               type="text"
               placeholder="First Name"
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={e => setFirstName(e.target.value)}
               required
             />
             <input
               type="text"
               placeholder="Last Name"
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={e => setLastName(e.target.value)}
               required
             />
             <input
               type="email"
               placeholder="Email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               required
             />
             <input
               type="password"
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               required
             />
             <input
               type="password"
               placeholder="Confirm Password"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={e => setConfirmPassword(e.target.value)}
               required
             />
             <button type="submit">Sign Up</button>
@@ -103,14 +109,14 @@ const Auth = ({ firebase }) => {
               type="email"
               placeholder="Email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               required
             />
             <input
               type="password"
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               required
             />
             <a href="#">Forgot your password?</a>
@@ -122,13 +128,27 @@ const Auth = ({ firebase }) => {
         <div className="overlay">
           <div className="overlay-panel overlay-left">
             <h1>Welcome Back!</h1>
-            <p>To keep connected with us please login with your personal info</p>
-            <button className="ghost" id="signIn" onClick={() => setIsSignUp(false)}>Sign In</button>
+            <p>
+              To keep connected with us please login with your personal info
+            </p>
+            <button
+              className="ghost"
+              id="signIn"
+              onClick={() => setIsSignUp(false)}
+            >
+              Sign In
+            </button>
           </div>
           <div className="overlay-panel overlay-right">
             <h1>Hello, Friend!</h1>
             <p>Enter your personal details and start journey with us</p>
-            <button className="ghost" id="signUp" onClick={() => setIsSignUp(true)}>Sign Up</button>
+            <button
+              className="ghost"
+              id="signUp"
+              onClick={() => setIsSignUp(true)}
+            >
+              Sign Up
+            </button>
           </div>
         </div>
       </div>
