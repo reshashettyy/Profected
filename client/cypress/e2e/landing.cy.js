@@ -27,8 +27,11 @@ describe('Matching Button', () => {
       // Navigate back to the home page if an uncaught exception occurs
       cy.visit('http://localhost:3000/');
 
-      // Still return false to prevent Cypress from failing the test
-      return false;
+      // Click the matching button
+      cy.contains('Get Matched').click();
+
+      // Assert that the URL contains '/matching' indicating navigation to the matching page
+      cy.url().should('include', '/login');
     });
 
     // Visit the home page and interact with the 'Get Matched' button
