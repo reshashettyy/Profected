@@ -7,7 +7,7 @@ function JobTitle({jobTitle, handleJobTitleChange}) {
       <h3>Enter your recent Job Titles: </h3>
       <TextField
         required
-        label="Enter your recent Job Titles (separated by comma)"
+        label="Enter your most recent Job Title"
         variant="outlined"
         fullWidth
         multiline
