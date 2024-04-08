@@ -6,9 +6,9 @@ describe('RelevantSkills component', () => {
   test('updates skills when input changes', () => {
     render(<RelevantSkills />);
 
-    // Find the input field
-    const inputField = screen.getByLabelText(
-      'Enter your relevant skills (separated by comma)',
+    // Find the input field by its placeholder text
+    const inputField = screen.getByPlaceholderText(
+      'e.g., JavaScript, React, Node.js',
     );
 
     // Simulate typing into the input field
